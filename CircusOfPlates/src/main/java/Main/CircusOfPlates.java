@@ -6,6 +6,7 @@ package Main;
 
 import Shapes.Bar;
 import Shapes.Circle;
+import Shapes.ClownStick;
 import Shapes.ImageObject;
 import Shapes.Plate;
 import Shapes.Rectangle;
@@ -39,14 +40,16 @@ public class CircusOfPlates implements World {
     private final List<GameObject> control = new LinkedList<GameObject>();
     ListIterator<GameObject> iterator = moving.listIterator();
     GameObject gameObject;
-    private long FlagTime=startTime; 
-    private int lives=3;
-    private ArrayList<GameObject> livesList=new ArrayList<>();
-    
+    private long FlagTime;
+    private int livesRemaining;
+    private int livesCounter;
+
     public CircusOfPlates(int screenWidth, int screenHeight) {
         width = screenWidth;
         height = screenHeight;
-
+        livesRemaining = 3;
+        livesCounter=0;
+        FlagTime=startTime;
         //constant objects
         for (int i = 0; i < 5; i++) {
             constant.add(new ImageObject(0, 0, false, "/circusBackground.png"));
@@ -58,17 +61,21 @@ public class CircusOfPlates implements World {
         //controlable objects
         for (int i = 0; i < 3; i++) {
             control.add(new ImageObject(300, 410, true, "/clownn.png"));
-            control.add(new ImageObject(440, 353, true, "/RightStick.png"));
-            control.add(new ImageObject(234, 414, true, "/LeftStick.png"));
+//            control.add(new ImageObject(440, 353, true, "/RightStick.png"));
+//            control.add(new ImageObject(234, 414, true, "/LeftStick.png"));
+            control.add(new ClownStick(305,385,true,Color.GREEN));
+            control.add(new ClownStick(420,325,true,Color.BLUE));
+            control.add(new Rectangle(270,360, 80, 30, Color.BLACK));
+            control.add(new Rectangle(385,300, 80, 30, Color.BLACK));
         }
+        //movable objects
+//        for(int i=0;i<4;i++) {
+//        moving.add(new Rectangle(-50, 30, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
+//        moving.add(new Plate(800, 45, 70, 30, new Color(((int) (Math.random() * 0x1000000)))));
+//        moving.add(new Rectangle(800, 150, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
+//        moving.add(new Plate(-30, 165, 70, 30, new Color(((int) (Math.random() * 0x1000000)))));
+//        }
 
-//            moving.add(new Rectangle(-25, 30, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
-//            moving.add(new ImageObject(-50, 140, false, "/plates.png"));
-//            moving.add(new ImageObject(800, 20, false, "/plates.png"));
-//            moving.add(new Rectangle(800, 150, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
-//            constant.add(new Plate());
-
-        
     }
 
     private boolean intersect(GameObject o1, GameObject o2) {
@@ -77,39 +84,36 @@ public class CircusOfPlates implements World {
     }
 
     @Override
-    public boolean refresh() {
+    public boolean refresh() {       
         //timeRemaining -= System.currentTimeMillis();
-        if(lives==0) {
+        if (livesRemaining == 0) {
+            livesCounter=0;
             return false;
+        } else if (livesCounter == 70) {
+            livesRemaining = 2;
+        } else if (livesCounter== 120) {
+            livesRemaining = 1;
+        } else if (livesCounter == 170) {
+            livesRemaining = 0;
         }
-        else if(livesList.size()==70) {
-            lives=2;
-        }
-        else if(livesList.size()==120) {
-            lives=1;
-        }
-         else if(livesList.size()==170) {
-            lives=0;
-        }
-        long diff=System.currentTimeMillis()-FlagTime;
+        long diff = System.currentTimeMillis() - FlagTime;
 
-        if(diff>1000&&diff<1100) {
-            
-        moving.add(new Rectangle(-50, 30, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
-        moving.add(new Plate(800,45,70,30,new Color(((int) (Math.random() * 0x1000000)))));
-        moving.add(new Rectangle(800, 150, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
-        moving.add(new Plate(-30,165,70,30,new Color(((int) (Math.random() * 0x1000000)))));
-        //moving.add(new ImageObject(800, 140, false, "/Rectangle.png"));
-        FlagTime=System.currentTimeMillis();
-       }
+        if (diff > 1000 && diff < 1100) {
+
+            moving.add(new Rectangle(-50, 30, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
+            moving.add(new Plate(800, 45, 70, 30, new Color(((int) (Math.random() * 0x1000000)))));
+            moving.add(new Rectangle(800, 150, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
+            moving.add(new Plate(-30, 165, 70, 30, new Color(((int) (Math.random() * 0x1000000)))));
+            FlagTime = System.currentTimeMillis();
+        }
         for (int i = 0; i < moving.size(); i++) {
-            
+
             gameObject = moving.get(i);
-           
+
             if (gameObject != null) {
-                
+
                 if (gameObject.getY() > 600) {
-                    livesList.add(gameObject);
+                    livesCounter++;
                     moving.remove(i);
                 }
                 if (gameObject.getY() < 100) {
@@ -147,8 +151,7 @@ public class CircusOfPlates implements World {
             }
         }
 
-    
-            //		// randomly hide constant objects
+        //		// randomly hide constant objects
 //		for(GameObject n : constant)
 //			if(n.isVisible() && Math.random() < 0.0002 )
 //				((CrossObject)n).setVisible(false);
@@ -176,7 +179,6 @@ public class CircusOfPlates implements World {
 //			foundVisible |= n.isVisible();
 //		if(!foundVisible)
 //			return false; // game ends (win)
-
         return true;
     }
 
@@ -217,7 +219,7 @@ public class CircusOfPlates implements World {
 
     @Override
     public String getStatus() {
-        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" +lives;	// update status
+        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining;	// update status
     }
 
 }

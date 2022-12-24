@@ -23,8 +23,6 @@ public class ImageObject implements GameObject{
 	private boolean visible;
 	private int type;
         boolean horizontalOnly;
-        private boolean caughtByRightStick;
-        private boolean caughtByLeftStick;
 	
 	public ImageObject(int posX, int posY,boolean horizontal, String path){
 		this(posX, posY, horizontal,path, 0);
@@ -100,21 +98,7 @@ public class ImageObject implements GameObject{
 		this.type = type;
 	}
 
-    public boolean isCaughtByRightStick() {
-        return caughtByRightStick;
-    }
 
-    public void setCaughtByRightStick(boolean caughtByRightStick) {
-        this.caughtByRightStick = caughtByRightStick;
-    }
-
-    public boolean isCaughtByLeftStick() {
-        return caughtByLeftStick;
-    }
-
-    public void setCaughtByLeftStick(boolean caughtByLeftStick) {
-        this.caughtByLeftStick = caughtByLeftStick;
-    }
 	
 	
 }
