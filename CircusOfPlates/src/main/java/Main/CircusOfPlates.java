@@ -32,7 +32,7 @@ import javax.swing.Timer;
  */
 public class CircusOfPlates implements World {
 
-    private static int MAX_TIME = 1 * 60 * 1000;	// 1 minute
+    private static int MAX_TIME = 1 * 90 * 1000;	// 90 seconds
     private Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.ORANGE};
     private int score = 0;
     private long startTime = System.currentTimeMillis();
@@ -46,8 +46,8 @@ public class CircusOfPlates implements World {
     private long FlagTime;
     private int livesRemaining;
     private int livesCounter;
-    private Stack caughtLeft = new Stack();
-    private Stack caughtRight = new Stack();
+    private Stack<GameObject> caughtLeft = new Stack();
+    private Stack<GameObject> caughtRight = new Stack();
 
     public CircusOfPlates(int screenWidth, int screenHeight) {
         width = screenWidth;
@@ -99,13 +99,13 @@ public class CircusOfPlates implements World {
         if (livesRemaining == 0) {
             livesCounter = 0;
             return false;
-        } else if (livesCounter == 70) {
+        } else if (livesCounter == 30) {
             ((ImageObject)constant.get(3)).setVisible(false);
             livesRemaining = 2;
-        } else if (livesCounter == 140) {
+        } else if (livesCounter == 60) {
             ((ImageObject)constant.get(2)).setVisible(false);
             livesRemaining = 1;
-        } else if (livesCounter == 210) {
+        } else if (livesCounter == 90) {
             ((ImageObject)constant.get(1)).setVisible(false);
             livesRemaining = 0;
         }
@@ -132,6 +132,7 @@ public class CircusOfPlates implements World {
 
                 gameObject.setY(gameObject.getY() + 2);
             }
+            
         }
 
         for (GameObject n : moving) {
@@ -200,7 +201,7 @@ public class CircusOfPlates implements World {
 
     @Override
     public String getStatus() {
-        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining+"     |      Time Remaining=" + Math.max(0, (MAX_TIME - (System.currentTimeMillis()-startTime))/1000);	// update status
+        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining+"     |      Time Remaining=" + Math.max(0, (MAX_TIME - (System.currentTimeMillis()-startTime))/1000)+" seconds";	// update status
     }
 
 }
