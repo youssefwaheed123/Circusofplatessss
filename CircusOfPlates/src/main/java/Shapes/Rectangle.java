@@ -80,7 +80,7 @@ public class Rectangle implements GameObject {
 
     @Override
     public int getHeight() {
-        return SPRITE_HEIGHT;
+        return height;
     }
 
     @Override

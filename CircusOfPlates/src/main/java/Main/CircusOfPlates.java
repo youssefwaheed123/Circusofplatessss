@@ -51,23 +51,20 @@ public class CircusOfPlates implements World {
         livesCounter=0;
         FlagTime=startTime;
         //constant objects
-        for (int i = 0; i < 5; i++) {
             constant.add(new ImageObject(0, 0, false, "/circusBackground.png"));
             constant.add(new Bar(0, 55, 300, true, Color.PINK));
             constant.add(new Bar(0, 175, 130, true, Color.RED));
             constant.add(new Bar(500, 55, 300, true, Color.BLUE));
             constant.add(new Bar(670, 175, 130, true, Color.YELLOW));
-        }
+        
         //controlable objects
-        for (int i = 0; i < 3; i++) {
+
             control.add(new ImageObject(300, 410, true, "/clownn.png"));
-//            control.add(new ImageObject(440, 353, true, "/RightStick.png"));
-//            control.add(new ImageObject(234, 414, true, "/LeftStick.png"));
-            control.add(new ClownStick(305,385,true,Color.GREEN));
-            control.add(new ClownStick(420,325,true,Color.BLUE));
-            control.add(new Rectangle(270,360, 80, 30, Color.BLACK));
-            control.add(new Rectangle(385,300, 80, 30, Color.BLACK));
-        }
+            control.add(new ClownStick(300,385,true,Color.GREEN));
+            control.add(new ClownStick(433,325,true,Color.BLUE));
+            control.add(new Rectangle(260,360, 80, 30, Color.BLACK));
+            control.add(new Rectangle(393,300, 80, 30, Color.BLACK));
+        
         //movable objects
 //        for(int i=0;i<4;i++) {
 //        moving.add(new Rectangle(-50, 30, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
@@ -84,7 +81,10 @@ public class CircusOfPlates implements World {
     }
 
     @Override
-    public boolean refresh() {       
+    public boolean refresh() {
+        
+ 
+        
         //timeRemaining -= System.currentTimeMillis();
         if (livesRemaining == 0) {
             livesCounter=0;
@@ -150,6 +150,33 @@ public class CircusOfPlates implements World {
                 }
             }
         }
+            if(control.get(3).getX()<=0 ) {
+                GameObject clown=new ImageObject(40,control.get(0).getY(),true,"/clownn.png");
+                GameObject leftStick = new ClownStick(40,control.get(1).getY(), true,Color.GREEN);
+                GameObject rightStick = new ClownStick(173,control.get(2).getY(), true,Color.BLUE);
+                GameObject leftrectangle = new Rectangle(control.get(3).getX(),control.get(3).getY(), control.get(3).getWidth(), control.get(3).getHeight(), Color.BLACK);
+                GameObject rightrectangle = new Rectangle(133,control.get(4).getY(), control.get(4).getWidth(), control.get(4).getHeight(), Color.BLACK);
+                control.clear();
+                control.add(clown);
+                control.add(leftStick);
+                control.add(rightStick);
+                control.add(leftrectangle);
+                control.add(rightrectangle);
+            }
+            else if( control.get(4).getX()>=720) {
+                GameObject clown=new ImageObject(627,control.get(0).getY(),true,"/clownn.png");
+                GameObject leftStick = new ClownStick(627,control.get(1).getY(), true,Color.GREEN);
+                GameObject rightStick = new ClownStick(760,control.get(2).getY(), true,Color.BLUE);
+                GameObject leftrectangle = new Rectangle(587,control.get(3).getY(), control.get(3).getWidth(), control.get(3).getHeight(), Color.BLACK);
+                GameObject rightrectangle = new Rectangle(control.get(4).getX(),control.get(4).getY(), control.get(4).getWidth(), control.get(4).getHeight(), Color.BLACK);
+                control.clear();
+                control.add(clown);
+                control.add(leftStick);
+                control.add(rightStick);
+                control.add(leftrectangle);
+                control.add(rightrectangle);
+            }
+
 
         //		// randomly hide constant objects
 //		for(GameObject n : constant)
