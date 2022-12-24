@@ -13,6 +13,7 @@ import eg.edu.alexu.csd.oop.game.GameObject;
 import eg.edu.alexu.csd.oop.game.World;
 import java.awt.Color;
 import java.awt.Shape;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -39,7 +40,9 @@ public class CircusOfPlates implements World {
     ListIterator<GameObject> iterator = moving.listIterator();
     GameObject gameObject;
     private long FlagTime=startTime; 
-
+    private int lives=3;
+    private ArrayList<GameObject> livesList=new ArrayList<>();
+    
     public CircusOfPlates(int screenWidth, int screenHeight) {
         width = screenWidth;
         height = screenHeight;
@@ -75,9 +78,21 @@ public class CircusOfPlates implements World {
 
     @Override
     public boolean refresh() {
-        
+        //timeRemaining -= System.currentTimeMillis();
+        if(lives==0) {
+            return false;
+        }
+        else if(livesList.size()==70) {
+            lives=2;
+        }
+        else if(livesList.size()==120) {
+            lives=1;
+        }
+         else if(livesList.size()==170) {
+            lives=0;
+        }
         long diff=System.currentTimeMillis()-FlagTime;
-        
+
         if(diff>1000&&diff<1100) {
             
         moving.add(new Rectangle(-50, 30, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
@@ -94,6 +109,7 @@ public class CircusOfPlates implements World {
             if (gameObject != null) {
                 
                 if (gameObject.getY() > 600) {
+                    livesList.add(gameObject);
                     moving.remove(i);
                 }
                 if (gameObject.getY() < 100) {
@@ -201,7 +217,7 @@ public class CircusOfPlates implements World {
 
     @Override
     public String getStatus() {
-        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score;	// update status
+        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" +lives;	// update status
     }
 
 }
