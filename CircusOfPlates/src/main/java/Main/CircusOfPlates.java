@@ -33,7 +33,7 @@ import javax.swing.Timer;
 public class CircusOfPlates implements World {
 
     private static int MAX_TIME = 1 * 60 * 1000;	// 1 minute
-    private Color[] colors ={Color.RED,Color.BLUE,Color.GREEN,Color.YELLOW,Color.ORANGE};
+    private Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.ORANGE};
     private int score = 0;
     private long startTime = System.currentTimeMillis();
     private final int width;
@@ -46,9 +46,8 @@ public class CircusOfPlates implements World {
     private long FlagTime;
     private int livesRemaining;
     private int livesCounter;
-    private Stack caughtObjects = new Stack();
-    private GameObject leftCurrent;
-    private GameObject rightCurrent;
+    private Stack caughtLeft = new Stack();
+    private Stack caughtRight = new Stack();
 
     public CircusOfPlates(int screenWidth, int screenHeight) {
         width = screenWidth;
@@ -58,138 +57,110 @@ public class CircusOfPlates implements World {
         FlagTime = startTime;
         //constant objects
         constant.add(new ImageObject(0, 0, false, "/circusBackground.png"));
-//        constant.add(new Bar(0, 55, 300, true, Color.PINK));
-//        constant.add(new Bar(0, 175, 130, true, Color.RED));
-//        constant.add(new Bar(500, 55, 300, true, Color.BLUE));
-//        constant.add(new Bar(670, 175, 130, true, Color.YELLOW));
+        constant.add(new ImageObject(30,0, true, "/heart.png"));
+        constant.add(new ImageObject(60, 0, false, "/heart.png"));
+        constant.add(new ImageObject(90, 0, false, "/heart.png"));
+
 
         //controlable objects
         control.add(new ImageObject(300, 410, true, "/clownn.png"));
         control.add(new ClownStick(300, 385, true, Color.GREEN));
-        control.add(new ClownStick(433, 325, true, Color.BLUE));
+        control.add(new ClownStick(433, 325, true, Color.RED));
         control.add(new Rectangle(260, 360, 80, 30, Color.BLACK));
         control.add(new Rectangle(393, 300, 80, 30, Color.BLACK));
-        leftCurrent = control.get(3);
-        rightCurrent = control.get(4);
 
-        //movable objects
-//        for(int i=0;i<4;i++) {
-//        moving.add(new Rectangle(-50, 30, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
-//        moving.add(new Plate(800, 45, 70, 30, new Color(((int) (Math.random() * 0x1000000)))));
-//        moving.add(new Rectangle(800, 150, 50, 25, new Color(((int) (Math.random() * 0x1000000)))));
-//        moving.add(new Plate(-30, 165, 70, 30, new Color(((int) (Math.random() * 0x1000000)))));
-//        }
     }
 
     private boolean intersect(GameObject o1, GameObject o2) {
-        int delta = 10;
-        return (Math.abs(o1.getX() - o2.getX()) <= delta) && (Math.abs(o1.getY() - o2.getY()) <= delta);
+        return (Math.abs((o1.getX() + o1.getWidth() / 2) - (o2.getX() + o2.getWidth() / 2)) <= o1.getWidth()) && (Math.abs((o1.getY() + o1.getHeight() / 2) - (o2.getY() + o2.getHeight() / 2)) <= o1.getHeight());
     }
 
     @Override
     public boolean refresh() {
+        
+        boolean timeout = System.currentTimeMillis() - startTime > MAX_TIME;
 
         if (control.get(3).getX() <= 0) {
-            GameObject clown = new ImageObject(40, control.get(0).getY(), true, "/clownn.png");
-            GameObject leftStick = new ClownStick(40, control.get(1).getY(), true, Color.GREEN);
-            GameObject rightStick = new ClownStick(173, control.get(2).getY(), true, Color.BLUE);
-            GameObject leftrectangle = new Rectangle(control.get(3).getX(), control.get(3).getY(), control.get(3).getWidth(), control.get(3).getHeight(), Color.BLACK);
-            GameObject rightrectangle = new Rectangle(133, control.get(4).getY(), control.get(4).getWidth(), control.get(4).getHeight(), Color.BLACK);
-            control.clear();
-            control.add(clown);
-            control.add(leftStick);
-            control.add(rightStick);
-            control.add(leftrectangle);
-            control.add(rightrectangle);
+            
+              control.get(0).setX(40);
+              control.get(1).setX(40);
+              control.get(2).setX(173);
+              control.get(4).setX(133);
+              
         } else if (control.get(4).getX() >= 720) {
-            GameObject clown = new ImageObject(627, control.get(0).getY(), true, "/clownn.png");
-            GameObject leftStick = new ClownStick(627, control.get(1).getY(), true, Color.GREEN);
-            GameObject rightStick = new ClownStick(760, control.get(2).getY(), true, Color.BLUE);
-            GameObject leftrectangle = new Rectangle(587, control.get(3).getY(), control.get(3).getWidth(), control.get(3).getHeight(), Color.BLACK);
-            GameObject rightrectangle = new Rectangle(control.get(4).getX(), control.get(4).getY(), control.get(4).getWidth(), control.get(4).getHeight(), Color.BLACK);
-            control.clear();
-            control.add(clown);
-            control.add(leftStick);
-            control.add(rightStick);
-            control.add(leftrectangle);
-            control.add(rightrectangle);
+            
+            control.get(0).setX(627);
+            control.get(1).setX(627);
+            control.get(2).setX(760);
+            control.get(3).setX(587);
+            
         }
 
-
-        //timeRemaining -= System.currentTimeMillis();
         if (livesRemaining == 0) {
             livesCounter = 0;
             return false;
         } else if (livesCounter == 70) {
+            ((ImageObject)constant.get(3)).setVisible(false);
             livesRemaining = 2;
-        } else if (livesCounter == 120) {
+        } else if (livesCounter == 140) {
+            ((ImageObject)constant.get(2)).setVisible(false);
             livesRemaining = 1;
-        } else if (livesCounter == 170) {
+        } else if (livesCounter == 210) {
+            ((ImageObject)constant.get(1)).setVisible(false);
             livesRemaining = 0;
         }
         long diff = System.currentTimeMillis() - FlagTime;
 
-        if (diff > 1000 && diff < 1100) {
-            Random random =new Random();
+        if (diff > 1500 && diff < 2000) {
+            Random random = new Random();
 
-            moving.add(new Rectangle(random.nextInt(0,200), -20, 50, 25,colors[random.nextInt(5)]));
-            moving.add(new Plate(random.nextInt(200,400), -20, 70, 30, colors[random.nextInt(5)]));
-            moving.add(new Rectangle(random.nextInt(400,600), -20, 50, 25, colors[random.nextInt(5)]));
-            moving.add(new Plate(random.nextInt(600,800), -20, 70, 30, colors[random.nextInt(5)]));
+            moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-100, -20), 50, 25, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-80, -20), 70, 30, colors[random.nextInt(5)]));
+            moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-60, -20), 50, 25, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-30, -20), 70, 30, colors[random.nextInt(5)]));
             FlagTime = System.currentTimeMillis();
-      
+
         }
         for (int i = 0; i < moving.size(); i++) {
 
             gameObject = moving.get(i);
-            if(gameObject.getY()>600) {
+            if (gameObject.getY() > 600) {
                 moving.remove(gameObject);
                 livesCounter++;
             }
             if (gameObject != null) {
 
-                gameObject.setY(gameObject.getY() + 5);
+                gameObject.setY(gameObject.getY() + 2);
             }
         }
 
-        //		// randomly hide constant objects
-//		for(GameObject n : constant)
-//			if(n.isVisible() && Math.random() < 0.0002 )
-//				((CrossObject)n).setVisible(false);
-//		// change position of moving objects
-//		boolean direction = false;
-//		for(GameObject m : moving){
-//			m.setX((direction ? m.getX() + (int)(3 * Math.random()) : getWidth() + m.getX() - (int)(3 * Math.random())) % getWidth());	// move object
-//			direction = ! direction;
-//		}
-//		// check intersection with constant
         for (GameObject n : moving) {
-            if (intersect(leftCurrent, n) || intersect(rightCurrent, n)) {
-                if(intersect(leftCurrent, n) ) {
-                    leftCurrent=n;
-                    
+            if (intersect(control.get(3), n) || intersect(control.get(4), n)) {
+
+                if (intersect(control.get(3), n) && n.getY() < control.get(3).getY()) {
+                    if (n instanceof Plate) {
+                        n.setX(control.get(3).getX() + 8);
+                    } else {
+                        n.setX(control.get(3).getX() + 15);
+                    }
+                    n.setY(control.get(3).getY() - n.getHeight());
+
                 }
-                else {
-                    rightCurrent=n;
-                    System.out.println("a8a");
+                if (intersect(control.get(4), n)) {
+                    if (n instanceof Plate) {
+                        n.setX(control.get(4).getX() + 8);
+                    } else {
+                        n.setX(control.get(4).getX() + 15);
+                    }
+                    n.setY(control.get(4).getY() - n.getHeight());
+
                 }
-                n.setY(n.getY());
-                
-                score++; 	// got score
+
+                 	// got score
             }
         }
-//		// check intersection with moving objects
-//		for(GameObject c : control)
-//			for(GameObject m : moving)
-//				if(intersect(c, m))
-//					return false;	// game over (lose)
-//		// check if any constant object still visible
-//		boolean foundVisible = false;
-//		for(GameObject n : constant)
-//			foundVisible |= n.isVisible();
-//		if(!foundVisible)
-//			return false; // game ends (win)
-        return true;
+
+        return !timeout;
     }
 
     @Override
@@ -229,7 +200,7 @@ public class CircusOfPlates implements World {
 
     @Override
     public String getStatus() {
-        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining;	// update status
+        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining+"     |      Time Remaining=" + Math.max(0, (MAX_TIME - (System.currentTimeMillis()-startTime))/1000);	// update status
     }
 
 }
