@@ -31,12 +31,14 @@ public class Plate implements GameObject {
     private int height;
     private boolean visible;
     private boolean horizontalOnly;
+    private Color color;
 
     public Plate(int posX, int posY, int width,int height, Color color) {
         this.x = posX;
         this.y = posY;
         this.width = width;
         this.height=height;
+        this.color=color;
         this.horizontalOnly = horizontalOnly;
         this.visible = true;
         // create a bunch of buffered images and place into an array, to be displayed sequentially
@@ -105,6 +107,13 @@ public class Plate implements GameObject {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+    
+    public void setColor(Color color) {
+        this.color=color;
+    }
+    public Color getColor() {
+        return color;
     }
 
 }

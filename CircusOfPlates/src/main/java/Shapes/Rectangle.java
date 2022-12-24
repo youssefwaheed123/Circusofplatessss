@@ -29,6 +29,7 @@ public class Rectangle implements GameObject {
     private int width;
     private int height;
     private boolean visible;
+    private Color color;
     
 
     public Rectangle(int posX, int posY, int width,int height , Color color) {
@@ -37,6 +38,7 @@ public class Rectangle implements GameObject {
         this.width = width;
         this.height=height;
         this.visible = true;
+        this.color=color;
         // create a bunch of buffered images and place into an array, to be displayed sequentially
         spriteImages[0] = new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D g2 = spriteImages[0].createGraphics();
@@ -90,6 +92,12 @@ public class Rectangle implements GameObject {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+        public void setColor(Color color) {
+        this.color=color;
+    }
+    public Color getColor() {
+        return color;
     }
 
 }
