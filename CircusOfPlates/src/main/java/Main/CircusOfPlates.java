@@ -58,10 +58,10 @@ public class CircusOfPlates implements World {
         FlagTime = startTime;
         //constant objects
         constant.add(new ImageObject(0, 0, false, "/circusBackground.png"));
-        constant.add(new Bar(0, 55, 300, true, Color.PINK));
-        constant.add(new Bar(0, 175, 130, true, Color.RED));
-        constant.add(new Bar(500, 55, 300, true, Color.BLUE));
-        constant.add(new Bar(670, 175, 130, true, Color.YELLOW));
+//        constant.add(new Bar(0, 55, 300, true, Color.PINK));
+//        constant.add(new Bar(0, 175, 130, true, Color.RED));
+//        constant.add(new Bar(500, 55, 300, true, Color.BLUE));
+//        constant.add(new Bar(670, 175, 130, true, Color.YELLOW));
 
         //controlable objects
         control.add(new ImageObject(300, 410, true, "/clownn.png"));
@@ -132,55 +132,23 @@ public class CircusOfPlates implements World {
         if (diff > 1000 && diff < 1100) {
             Random random =new Random();
 
-            moving.add(new Rectangle(-50, 30, 50, 25,colors[random.nextInt(5)]));
-            moving.add(new Plate(800, 45, 70, 30, colors[random.nextInt(5)]));
-            moving.add(new Rectangle(800, 150, 50, 25, colors[random.nextInt(5)]));
-            moving.add(new Plate(-30, 165, 70, 30, colors[random.nextInt(5)]));
+            moving.add(new Rectangle(random.nextInt(0,200), -20, 50, 25,colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(200,400), -20, 70, 30, colors[random.nextInt(5)]));
+            moving.add(new Rectangle(random.nextInt(400,600), -20, 50, 25, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(600,800), -20, 70, 30, colors[random.nextInt(5)]));
             FlagTime = System.currentTimeMillis();
       
         }
         for (int i = 0; i < moving.size(); i++) {
 
             gameObject = moving.get(i);
-
+            if(gameObject.getY()>600) {
+                moving.remove(gameObject);
+                livesCounter++;
+            }
             if (gameObject != null) {
 
-                if (gameObject.getY() > 600) {
-                    livesCounter++;
-                    moving.remove(i);
-                }
-                if (gameObject.getY() < 100) {
-                    if (gameObject.getX() < 400) {
-                        if (gameObject.getX() < 300) {
-                            gameObject.setX(gameObject.getX() + 5);
-
-                        } else {
-                            gameObject.setY(gameObject.getY() + 5);
-
-                        }
-                    } else {
-                        if (gameObject.getX() >= 460) {
-                            gameObject.setX(gameObject.getX() - 5);
-                        } else {
-                            gameObject.setY(gameObject.getY() + 5);
-                        }
-                    }
-                } else {
-                    if (gameObject.getX() < 400) {
-                        if (gameObject.getX() < 130) {
-                            gameObject.setX(gameObject.getX() + 5);
-                        } else {
-                            gameObject.setY(gameObject.getY() + 5);
-                        }
-                    } else {
-                        if (gameObject.getX() >= 630) {
-                            gameObject.setX(gameObject.getX() - 5);
-                        } else {
-                            gameObject.setY(gameObject.getY() + 5);
-                        }
-                    }
-
-                }
+                gameObject.setY(gameObject.getY() + 5);
             }
         }
 
