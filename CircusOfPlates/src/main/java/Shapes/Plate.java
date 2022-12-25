@@ -32,6 +32,8 @@ public class Plate implements GameObject {
     private boolean visible;
     private boolean horizontalOnly;
     private Color color;
+    private boolean caughtByLeft;
+    private boolean caughtByRight;
 
     public Plate(int posX, int posY, int width, boolean horizontalOnly, Color color) {
         this.x = posX;
@@ -120,6 +122,22 @@ public class Plate implements GameObject {
 
     public Color getColor() {
         return color;
+    }
+
+    public boolean isCaughtByLeft() {
+        return caughtByLeft;
+    }
+
+    public void setCaughtByLeft(boolean caughtByLeft) {
+        this.caughtByLeft = caughtByLeft;
+    }
+
+    public boolean isCaughtByRight() {
+        return caughtByRight;
+    }
+
+    public void setCaughtByRight(boolean caughtByRight) {
+        this.caughtByRight = caughtByRight;
     }
 
 }
