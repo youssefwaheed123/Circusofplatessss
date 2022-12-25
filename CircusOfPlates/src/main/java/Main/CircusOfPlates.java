@@ -48,6 +48,9 @@ public class CircusOfPlates implements World {
     private int livesCounter;
     private Stack<GameObject> caughtLeft = new Stack();
     private Stack<GameObject> caughtRight = new Stack();
+    private int i;
+    private int heightOfCaught;
+    GameObject objectToIntersectRight;
 
     public CircusOfPlates(int screenWidth, int screenHeight) {
         width = screenWidth;
@@ -68,6 +71,9 @@ public class CircusOfPlates implements World {
         control.add(new ClownStick(433, 325, true, Color.RED));
         control.add(new Rectangle(260, 360, 80, 30, Color.BLACK));
         control.add(new Rectangle(393, 300, 80, 30, Color.BLACK));
+        objectToIntersectRight=control.get(4);
+        i=5;
+        heightOfCaught=control.get(4).getY();
 
     }
 
@@ -79,6 +85,12 @@ public class CircusOfPlates implements World {
     public boolean refresh() {
         
         boolean timeout = System.currentTimeMillis() - startTime > MAX_TIME;
+        
+        if(control.size()>i) {
+            heightOfCaught -=control.get(i).getHeight(); 
+            i++;
+        
+        }
 
         if (control.get(3).getX() <= 0) {
             
@@ -115,9 +127,9 @@ public class CircusOfPlates implements World {
             Random random = new Random();
 
             moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-100, -20), 50, 25, colors[random.nextInt(5)]));
-            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-80, -20), 70, 30, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-80, -20), 70,false, colors[random.nextInt(5)]));
             moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-60, -20), 50, 25, colors[random.nextInt(5)]));
-            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-30, -20), 70, 30, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-30, -20), 70,false, colors[random.nextInt(5)]));
             FlagTime = System.currentTimeMillis();
 
         }
@@ -135,8 +147,9 @@ public class CircusOfPlates implements World {
             
         }
 
-        for (GameObject n : moving) {
-            if (intersect(control.get(3), n) || intersect(control.get(4), n)) {
+        for (int i=0;i<moving.size();i++) {
+            GameObject n=moving.get(i);
+            if (intersect(control.get(3), n) || intersect(objectToIntersectRight, n)) {
 
                 if (intersect(control.get(3), n) && n.getY() < control.get(3).getY()) {
                     if (n instanceof Plate) {
@@ -147,13 +160,16 @@ public class CircusOfPlates implements World {
                     n.setY(control.get(3).getY() - n.getHeight());
 
                 }
-                if (intersect(control.get(4), n)) {
+                if (intersect(objectToIntersectRight, n)) {
                     if (n instanceof Plate) {
-                        n.setX(control.get(4).getX() + 8);
+                        GameObject object=new Plate(control.get(4).getX()+8,heightOfCaught - n.getHeight(),n.getWidth(),true,((Plate) n).getColor());
+                        control.add(object);
+                        moving.remove(n);
+                        objectToIntersectRight=object;
                     } else {
                         n.setX(control.get(4).getX() + 15);
                     }
-                    n.setY(control.get(4).getY() - n.getHeight());
+                   // n.setY(control.get(4).getY() - n.getHeight());
 
                 }
 

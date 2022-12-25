@@ -33,12 +33,12 @@ public class Plate implements GameObject {
     private boolean horizontalOnly;
     private Color color;
 
-    public Plate(int posX, int posY, int width,int height, Color color) {
+    public Plate(int posX, int posY, int width, boolean horizontalOnly, Color color) {
         this.x = posX;
         this.y = posY;
         this.width = width;
-        this.height=height;
-        this.color=color;
+        this.height = SPRITE_HEIGHT;
+        this.color = color;
         this.horizontalOnly = horizontalOnly;
         this.visible = true;
         // create a bunch of buffered images and place into an array, to be displayed sequentially
@@ -50,14 +50,13 @@ public class Plate implements GameObject {
         Polygon plate = new Polygon();
         plate.addPoint(0, 0);
         plate.addPoint(0 + width, 0);
-        plate.addPoint((int) (0+(0.25*width)), 0+height);
-        plate.addPoint((int) (0 + (0.75*width)), 0 + height);
+        plate.addPoint((int) (0 + (0.25 * width)), 0 + 30);
+        plate.addPoint((int) (0 + (0.75 * width)), 0 + 30);
 
-	//g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		//g2.setStroke(new BasicStroke(20));
+        //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        //g2.setStroke(new BasicStroke(20));
         //g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         g2.fillPolygon(plate);
-        
 
 //		g2.drawLine(0, 0, width, 0);
         g2.dispose();
@@ -81,7 +80,9 @@ public class Plate implements GameObject {
 
     @Override
     public void setY(int mY) {
-
+        if (horizontalOnly) {
+            return;
+        }
         this.y = mY;
     }
 
@@ -95,9 +96,13 @@ public class Plate implements GameObject {
         return width;
     }
 
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
     @Override
     public int getHeight() {
-        return SPRITE_HEIGHT;
+        return height;
     }
 
     @Override
@@ -108,10 +113,11 @@ public class Plate implements GameObject {
     public void setVisible(boolean visible) {
         this.visible = visible;
     }
-    
+
     public void setColor(Color color) {
-        this.color=color;
+        this.color = color;
     }
+
     public Color getColor() {
         return color;
     }
