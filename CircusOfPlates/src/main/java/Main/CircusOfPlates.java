@@ -41,6 +41,8 @@ public class CircusOfPlates implements World {
     private final List<GameObject> constant = new LinkedList<GameObject>();
     private final List<GameObject> moving = new LinkedList<GameObject>();
     private final List<GameObject> control = new LinkedList<GameObject>();
+    private final List<GameObject> caughtLeftList =new ArrayList<GameObject>();
+    private final List<GameObject> caughtRightList =new ArrayList<GameObject>();
     ListIterator<GameObject> iterator = moving.listIterator();
     GameObject gameObject;
     private long FlagTime;
@@ -75,9 +77,10 @@ public class CircusOfPlates implements World {
         control.add(new Rectangle(393, 300, 80, 30,true, Color.BLACK));
         objectToIntersectRight=control.get(4);
         objectToIntersectLeft=control.get(3);
-        i=5;
+        int i=5;
         heightOfCaughtRight=control.get(4).getY();
         heightOfCaughtLeft=control.get(3).getY();
+        
 
     }
 
@@ -87,10 +90,24 @@ public class CircusOfPlates implements World {
 
     @Override
     public boolean refresh() {
+        if(caughtLeft.size()==3) {
+            score++;
+            for(int i=0;i<caughtLeft.size();i++) {
+                if(caughtLeft.get(i) instanceof Plate){
+                ((Plate)caughtLeft.get(i)).setVisible(false);
+                objectToIntersectLeft=control.get(3);
+                heightOfCaughtLeft =control.get(3).getY();
+                }
+            }
+            heightOfCaughtLeft =control.get(3).getY();
+            caughtLeft.clear();
+            
+        }
         
         boolean timeout = System.currentTimeMillis() - startTime > MAX_TIME;
-        
+
         if(control.size()>i) {
+
             if(control.get(i) instanceof Rectangle) {
             if(((Rectangle)control.get(i)).isCaughtByLeft()) {
             heightOfCaughtLeft -=control.get(i).getHeight();
@@ -143,7 +160,6 @@ public class CircusOfPlates implements World {
             livesRemaining = 0;
         }
         long diff = System.currentTimeMillis() - FlagTime;
-
         if (diff > 1500 && diff < 2000) {
             Random random = new Random();
 
@@ -170,21 +186,34 @@ public class CircusOfPlates implements World {
 
         for (int i=0;i<moving.size();i++) {
             GameObject n=moving.get(i);
-            if (intersect(control.get(3), n) || intersect(objectToIntersectRight, n)) {
+            if (intersect(objectToIntersectLeft, n) || intersect(objectToIntersectRight, n)) {
 
                 if (intersect(objectToIntersectLeft, n) ) {
                     if (n instanceof Plate) {
-                        GameObject object=new Plate(objectToIntersectLeft.getX()+8,heightOfCaughtLeft - n.getHeight(),n.getWidth(),true,((Plate) n).getColor());
+                        GameObject object=new Plate(control.get(3).getX()+8,heightOfCaughtLeft - n.getHeight(),n.getWidth(),true,((Plate) n).getColor());
+                        if(caughtLeft.isEmpty()) {
+                            caughtLeft.push(object);
+                        }
+                        else if(!caughtLeft.isEmpty()) {
+                            if(((Plate)caughtLeft.peek()).getColor().equals(((Plate)object).getColor()) ) {
+                                caughtLeft.push(object);
+                            }
+                            else{
+                                
+                                caughtLeft.pop();
+                                caughtLeft.push(object);
+                            }
+                        }
                         control.add(object);
                         moving.remove(n);
                         ((Plate)object).setCaughtByLeft(true);
-                        objectToIntersectRight=object;
+                        objectToIntersectLeft=object;
                     } else {
-                        GameObject object=new Rectangle(control.get(4).getX()+15,heightOfCaughtLeft - n.getHeight(),n.getWidth(),n.getHeight(),true,((Rectangle) n).getColor());
+                        GameObject object=new Rectangle(control.get(3).getX()+15,heightOfCaughtLeft - n.getHeight(),n.getWidth(),n.getHeight(),true,((Rectangle) n).getColor());
                         control.add(object);
                         moving.remove(n);
                         ((Rectangle)object).setCaughtByLeft(true);
-                        objectToIntersectRight=object;
+                        objectToIntersectLeft=object;
                     }
 
                 }
@@ -220,7 +249,7 @@ public class CircusOfPlates implements World {
 
     @Override
     public int getControlSpeed() {
-        return 3;
+        return 5;
     }
 
     @Override
