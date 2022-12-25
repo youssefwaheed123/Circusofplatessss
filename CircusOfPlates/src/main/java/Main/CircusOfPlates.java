@@ -41,8 +41,6 @@ public class CircusOfPlates implements World {
     private final List<GameObject> constant = new LinkedList<GameObject>();
     private final List<GameObject> moving = new LinkedList<GameObject>();
     private final List<GameObject> control = new LinkedList<GameObject>();
-    private final List<GameObject> caughtLeftList =new ArrayList<GameObject>();
-    private final List<GameObject> caughtRightList =new ArrayList<GameObject>();
     ListIterator<GameObject> iterator = moving.listIterator();
     GameObject gameObject;
     private long FlagTime;
@@ -77,10 +75,9 @@ public class CircusOfPlates implements World {
         control.add(new Rectangle(393, 300, 80, 30,true, Color.BLACK));
         objectToIntersectRight=control.get(4);
         objectToIntersectLeft=control.get(3);
-        int i=5;
+        i=5;
         heightOfCaughtRight=control.get(4).getY();
         heightOfCaughtLeft=control.get(3).getY();
-        
 
     }
 
