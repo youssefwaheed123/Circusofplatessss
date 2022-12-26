@@ -10,6 +10,7 @@ import Shapes.ClownStick;
 import Shapes.ImageObject;
 import Shapes.Plate;
 import Shapes.Rectangle;
+import Shapes.Shapes;
 import eg.edu.alexu.csd.oop.game.GameObject;
 import eg.edu.alexu.csd.oop.game.World;
 import java.awt.Color;
@@ -41,8 +42,8 @@ public class CircusOfPlates implements World {
     private final List<GameObject> constant = new LinkedList<GameObject>();
     private final List<GameObject> moving = new LinkedList<GameObject>();
     private final List<GameObject> control = new LinkedList<GameObject>();
-    private  final List<GameObject> caughtLeftShapes=new LinkedList<GameObject>();
-    private final List <GameObject> caughtRightShapes=new LinkedList<GameObject>();
+    private final List<GameObject> caughtLeftShapes = new LinkedList<GameObject>();
+    private final List<GameObject> caughtRightShapes = new LinkedList<GameObject>();
     ListIterator<GameObject> iterator = moving.listIterator();
     GameObject gameObject;
     private long FlagTime;
@@ -50,7 +51,8 @@ public class CircusOfPlates implements World {
     private int livesCounter;
     private Stack<GameObject> caughtLeft = new Stack();
     private Stack<GameObject> caughtRight = new Stack();
-    private int i;
+    private int leftIndex;
+    private int rightIndex;
     private int heightOfCaughtRight;
     private int heightOfCaughtLeft;
     GameObject objectToIntersectRight;
@@ -64,23 +66,31 @@ public class CircusOfPlates implements World {
         FlagTime = startTime;
         //constant objects
         constant.add(new ImageObject(0, 0, false, "/circusBackground.png"));
-        constant.add(new ImageObject(30,0, true, "/heart.png"));
+        constant.add(new ImageObject(30, 0, true, "/heart.png"));
         constant.add(new ImageObject(60, 0, false, "/heart.png"));
         constant.add(new ImageObject(90, 0, false, "/heart.png"));
 
-        
         //controlable objects
         control.add(new ImageObject(300, 410, true, "/clownn.png"));
         control.add(new ClownStick(300, 385, true, Color.GREEN));
         control.add(new ClownStick(433, 325, true, Color.YELLOW));
-        control.add(new Rectangle(260, 360, 80, 30,true, Color.BLACK));
-        control.add(new Rectangle(393, 300, 80, 30,true, Color.BLACK));
-        objectToIntersectRight=control.get(4);
-        objectToIntersectLeft=control.get(3);
-        i=0;
-        heightOfCaughtRight=control.get(4).getY();
-        heightOfCaughtLeft=control.get(3).getY();
+        control.add(new Rectangle(260, 360, 80, 30, true, Color.BLACK));
+        control.add(new Rectangle(393, 300, 80, 30, true, Color.BLACK));
+        objectToIntersectRight = control.get(4);
+        objectToIntersectLeft = control.get(3);
+        leftIndex = 0;
+        rightIndex = 0;
+        heightOfCaughtRight = control.get(4).getY();
+        heightOfCaughtLeft = control.get(3).getY();
 
+        //movable objects
+//        for (int i = 0; i < 10; i++) {
+//            Random random = new Random();
+//            moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-1000, -20), 50, 25, false, colors[random.nextInt(5)]));
+//            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-800, -30), 70, false, colors[random.nextInt(5)]));
+//            moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-700, -20), 50, 25, false, colors[random.nextInt(5)]));
+//            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-600, -20), 70, false, colors[random.nextInt(5)]));
+//        }
     }
 
     private boolean intersect(GameObject o1, GameObject o2) {
@@ -89,135 +99,197 @@ public class CircusOfPlates implements World {
 
     @Override
     public boolean refresh() {
-        if(caughtLeft.size()==3) {
-            score++;
-            for(int i=2;i>=0;i--) {
-               
-               control.remove(caughtLeft.get(i));
-                caughtLeftShapes.remove(caughtLeft.get(i));
-                /*if(caughtLeft.get(i) instanceof Plate){
-                ((Plate)caughtLeft.get(i)).setVisible(false);
-                objectToIntersectLeft=control.get(3);
-                heightOfCaughtLeft =control.get(3).getY();
-                }*/
-                    
-            heightOfCaughtLeft =caughtLeftShapes.get(caughtLeftShapes.size()-1).getY();
-        
-               
-            objectToIntersectLeft=caughtLeftShapes.get(caughtLeftShapes.size()-1);
-            }
-            //for(int i=control.size()-1;i>=0;i--){
-                
-            //if((caughtLeftShapes.get(caughtLeftShapes.size()-1).equals(control.get(i)))){
-           i=i-3;
-            caughtLeft.clear();
-            //break;
-            //}
-            
-        }
-        
         boolean timeout = System.currentTimeMillis() - startTime > MAX_TIME;
+        if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0) {
+            return false;
+        }
+        //updating left stack
+        if (caughtLeft.size() == 3) {
+            score++;
+            for (int i = 2; i >= 0; i--) {
 
-        if(caughtLeftShapes.size()>i) {
+                control.remove(caughtLeft.get(i));
+                caughtLeftShapes.remove(caughtLeft.get(i));
+                if (caughtLeftShapes.size()==0) {
+                    
+                    objectToIntersectLeft = control.get(3);
+                } else  {
+                    
+                    objectToIntersectLeft = caughtLeftShapes.get(caughtLeftShapes.size() - 1);
 
-            if(caughtLeftShapes.get(i) instanceof Rectangle) {
-            if(((Rectangle)control.get(i)).isCaughtByLeft()) {
-            heightOfCaughtLeft -=caughtLeftShapes.get(i).getHeight();
-        
+                }
+                heightOfCaughtLeft = objectToIntersectLeft.getY();
             }
-            else
-            {
-                heightOfCaughtRight -=caughtLeftShapes.get(i).getHeight();
+            leftIndex = leftIndex - 3;
+            caughtLeft.clear();
+            if(caughtLeftShapes.size()!=0) {
+            caughtLeft.push(objectToIntersectLeft);
             }
-            i++;
+        }
+        if (caughtRight.size() == 3) {
+            System.out.println("aa");
+            score++;
+            for (int i = 2; i >= 0; i--) {
+
+                control.remove(caughtRight.get(i));
+                caughtRightShapes.remove(caughtRight.get(i));
+                if (caughtRightShapes.size() == 0) {
+                    objectToIntersectRight = control.get(4);
+                } else {
+
+                    objectToIntersectRight = caughtRightShapes.get(caughtRightShapes.size() - 1);
+                }
+                heightOfCaughtRight = objectToIntersectRight.getY();
             }
-            else if(caughtLeftShapes.get(caughtLeftShapes.size()-1) instanceof Plate) {
-            if(((Plate)caughtLeftShapes.get(caughtLeftShapes.size()-1)).isCaughtByLeft()) {
-            heightOfCaughtLeft -=caughtLeftShapes.get(caughtLeftShapes.size()-1).getHeight();
-            objectToIntersectLeft=caughtLeftShapes.get(caughtLeftShapes.size()-1);
-            }
-            else
-            {
-                heightOfCaughtRight -=caughtLeftShapes.get(caughtLeftShapes.size()-1).getHeight();
-                objectToIntersectLeft=caughtLeftShapes.get(caughtLeftShapes.size()-1);
-            }
-            i++;
+            rightIndex = rightIndex - 3;
+            caughtRight.clear();
+            if(caughtRightShapes.size() != 0) {
+                caughtRight.push(objectToIntersectRight);
             }
         }
 
+        //updating height & caught objects
+        if (caughtLeftShapes.size() > leftIndex || caughtRightShapes.size() > rightIndex) {
+            if (caughtLeftShapes.size() > leftIndex) {
+                {
+                    if (caughtLeftShapes.size() == 0) {
+                        objectToIntersectLeft = control.get(3);
+                    } else {
+                        objectToIntersectLeft = caughtLeftShapes.get(caughtLeftShapes.size() - 1);
+                    }
+                    heightOfCaughtLeft = objectToIntersectLeft.getY();
+                    leftIndex++;
+                }
+            } else if (caughtRightShapes.size() > rightIndex) {
+                if (caughtRightShapes.size() == 0) {
+                    objectToIntersectRight = control.get(4);
+                } else {
+                    objectToIntersectRight = caughtRightShapes.get(caughtRightShapes.size() - 1);
+
+                }
+                heightOfCaughtRight = objectToIntersectRight.getY();
+                rightIndex++;
+
+            }
+        }
+
+        //setting the positions of the controlable objects so they cant pass over the screens width
         if (control.get(3).getX() <= 0) {
-            
-              control.get(0).setX(40);
-              control.get(1).setX(40);
-              control.get(2).setX(173);
-              control.get(4).setX(133);
-              
+
+            control.get(0).setX(40);
+            control.get(1).setX(40);
+            control.get(2).setX(173);
+            control.get(4).setX(133);
+            for (int i = 5; i < control.size(); i++) {
+
+                if (control.get(i) instanceof Rectangle) {
+                    if (((Shapes) control.get(i)).isCaughtByLeft()) {
+                        control.get(i).setX(control.get(3).getX() + 15);
+                        control.get(i).setY(control.get(i).getY());
+                    } else {
+                        control.get(i).setX(control.get(4).getX() + 15);
+                        control.get(i).setY(control.get(i).getY());
+                    }
+                } else {
+                    if (((Plate) control.get(i)).isCaughtByLeft()) {
+                        control.get(i).setX(control.get(3).getX() + 8);
+                        control.get(i).setY(control.get(i).getY());
+                    } else {
+                        control.get(i).setX(control.get(4).getX() + 8);
+                        control.get(i).setY(control.get(i).getY());
+                    }
+                }
+            }
+
         } else if (control.get(4).getX() >= 720) {
-            
+
             control.get(0).setX(627);
             control.get(1).setX(627);
             control.get(2).setX(760);
             control.get(3).setX(587);
-            
+            for (int i = 5; i < control.size(); i++) {
+
+                if (control.get(i) instanceof Rectangle) {
+                    if (((Shapes) control.get(i)).isCaughtByLeft()) {
+                        control.get(i).setX(control.get(3).getX() + 15);
+                        control.get(i).setY(control.get(i).getY());
+                    } else {
+                        control.get(i).setX(control.get(4).getX() + 15);
+                        control.get(i).setY(control.get(i).getY());
+                    }
+                } else if (control.get(i) instanceof Plate) {
+                    if (((Shapes) control.get(i)).isCaughtByLeft()) {
+                        control.get(i).setX(control.get(3).getX() + 8);
+                        control.get(i).setY(control.get(i).getY());
+                    } else {
+                        control.get(i).setX(control.get(4).getX() + 8);
+                        control.get(i).setY(control.get(i).getY());
+                    }
+                }
+            }
         }
 
+        //updating lives remaining to end the game
         if (livesRemaining == 0) {
             livesCounter = 0;
             return false;
         } else if (livesCounter == 30) {
-            ((ImageObject)constant.get(3)).setVisible(false);
+            ((ImageObject) constant.get(3)).setVisible(false);
             livesRemaining = 2;
         } else if (livesCounter == 60) {
-            ((ImageObject)constant.get(2)).setVisible(false);
+            ((ImageObject) constant.get(2)).setVisible(false);
             livesRemaining = 1;
         } else if (livesCounter == 90) {
-            ((ImageObject)constant.get(1)).setVisible(false);
+            ((ImageObject) constant.get(1)).setVisible(false);
             livesRemaining = 0;
-            
+
         }
+
         long diff = System.currentTimeMillis() - FlagTime;
         if (diff > 1500 && diff < 2000) {
             Random random = new Random();
 
-            moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-100, -20), 50, 25,false, colors[random.nextInt(5)]));
-            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-80, -20), 70,false, colors[random.nextInt(5)]));
-            moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-60, -20), 50, 25,false, colors[random.nextInt(5)]));
-            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-30, -20), 70,false, colors[random.nextInt(5)]));
+            moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-100, -20), 50, 25, false, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-80, -20), 70, false, colors[random.nextInt(5)]));
+            moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-60, -20), 50, 25, false, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-30, -20), 70, false, colors[random.nextInt(5)]));
             FlagTime = System.currentTimeMillis();
 
         }
+        //regenerating shapes 
         for (int i = 0; i < moving.size(); i++) {
-
+            Random random = new Random();
             gameObject = moving.get(i);
             if (gameObject.getY() > 600) {
-                moving.remove(gameObject);
+                gameObject.setX(gameObject.getX());
+                gameObject.setY(random.nextInt(-200, 0));
+                // moving.remove(gameObject);
                 livesCounter++;
             }
             if (gameObject != null) {
 
                 gameObject.setY(gameObject.getY() + 2);
             }
-            
+
         }
 
-        for (int i=0;i<moving.size();i++) {
-            GameObject n=moving.get(i);
+        //catching the falling objects
+        for (int i = 0; i < moving.size(); i++) {
+            GameObject n = moving.get(i);
             if (intersect(objectToIntersectLeft, n) || intersect(objectToIntersectRight, n)) {
 
-                if (intersect(objectToIntersectLeft, n) ) {
+                if (intersect(objectToIntersectLeft, n)) {
                     if (n instanceof Plate) {
-                        System.out.println(n.getHeight());
-                        GameObject object=new Plate(control.get(3).getX()+8,heightOfCaughtLeft - n.getHeight(),n.getWidth(),true,((Plate) n).getColor());
-                        
-                        if(caughtLeft.isEmpty()) {
+
+                        GameObject object = new Plate(control.get(3).getX() + 8, heightOfCaughtLeft - n.getHeight(), n.getWidth(), true, ((Plate) n).getColor());
+
+                        if (caughtLeft.isEmpty()) {
                             caughtLeft.push(object);
-                        }
-                        else if(!caughtLeft.isEmpty()) {
-                            if(((Plate)caughtLeft.peek()).getColor().equals(((Plate)object).getColor()) ) {
+                        } else if (!caughtLeft.isEmpty()) {
+                            if (((Shapes) caughtLeft.peek()).getColor().equals(((Shapes) object).getColor())) {
                                 caughtLeft.push(object);
-                            }
-                            else{
-                                
+                            } else {
+
                                 caughtLeft.clear();
                                 caughtLeft.push(object);
                             }
@@ -225,53 +297,75 @@ public class CircusOfPlates implements World {
                         control.add(object);
                         caughtLeftShapes.add(object);
                         moving.remove(n);
-                        ((Plate)object).setCaughtByLeft(true);
-                        objectToIntersectLeft=object;
+                        ((Plate) object).setcaughtByLeft(true);
+                        objectToIntersectLeft = object;
                     } else {
-                        GameObject object=new Rectangle(control.get(3).getX()+15,heightOfCaughtLeft - n.getHeight(),n.getWidth(),n.getHeight(),true,((Rectangle) n).getColor());
-                       if(caughtLeft.isEmpty()) {
+
+                        GameObject object = new Rectangle(control.get(3).getX() + 15, heightOfCaughtLeft - n.getHeight(), n.getWidth(), n.getHeight(), true, ((Rectangle) n).getColor());
+
+                        if (caughtLeft.isEmpty()) {
                             caughtLeft.push(object);
-                        }
-                        else if(!caughtLeft.isEmpty()) {
-                            if(((Rectangle)caughtLeft.peek()).getColor().equals(((Rectangle)object).getColor()) ) {
+                        } else if (!caughtLeft.isEmpty()) {
+                            if (((Shapes) caughtLeft.peek()).getColor().equals(((Shapes) object).getColor())) {
                                 caughtLeft.push(object);
-                            }
-                            else{
-                                
+                            } else {
+
                                 caughtLeft.clear();
                                 caughtLeft.push(object);
                             }
                         }
-                        
-                        
                         control.add(object);
-                        
                         caughtLeftShapes.add(object);
                         moving.remove(n);
-                        ((Rectangle)object).setCaughtByLeft(true);
-                        objectToIntersectLeft=object;
+                        ((Rectangle) object).setcaughtByLeft(true);
+                        objectToIntersectLeft = object;
                     }
 
                 }
                 if (intersect(objectToIntersectRight, n)) {
                     if (n instanceof Plate) {
-                        GameObject object=new Plate(control.get(4).getX()+8,heightOfCaughtRight - n.getHeight(),n.getWidth(),true,((Plate) n).getColor());
+
+                        GameObject object = new Plate(control.get(4).getX() + 8, heightOfCaughtRight - n.getHeight(), n.getWidth(), true, ((Plate) n).getColor());
+
+                        if (caughtRight.isEmpty()) {
+                            caughtRight.push(object);
+                        } else if (!caughtRight.isEmpty()) {
+                            if (((Shapes) caughtRight.peek()).getColor().equals(((Shapes) object).getColor())) {
+                                caughtRight.push(object);
+                            } else {
+
+                                caughtRight.clear();
+                                caughtRight.push(object);
+                            }
+                        }
                         control.add(object);
+                        caughtRightShapes.add(object);
                         moving.remove(n);
-                        ((Plate)object).setCaughtByRight(true);
-                        objectToIntersectRight=object;
-                    } else {
-                        GameObject object=new Rectangle(control.get(4).getX()+15,heightOfCaughtRight - n.getHeight(),n.getWidth(),n.getHeight(),true,((Rectangle) n).getColor());
+                        ((Plate) object).setcaughtByRight(true);
+                        objectToIntersectRight = object;
+                    } else if (n instanceof Rectangle) {
+                        GameObject object = new Rectangle(control.get(4).getX() + 15, heightOfCaughtRight - n.getHeight(), n.getWidth(), n.getHeight(), true, ((Rectangle) n).getColor());
+
+                        if (caughtRight.isEmpty()) {
+                            caughtRight.push(object);
+                        } else if (!caughtRight.isEmpty()) {
+                            if (((Shapes) caughtRight.peek()).getColor().equals(((Shapes) object).getColor())) {
+                                caughtRight.push(object);
+                            } else {
+
+                                caughtRight.clear();
+                                caughtRight.push(object);
+                            }
+                        }
                         control.add(object);
+                        caughtRightShapes.add(object);
                         moving.remove(n);
-                        ((Rectangle)object).setCaughtByRight(true);
-                        objectToIntersectRight=object;
+                        ((Rectangle) object).setcaughtByRight(true);
+                        objectToIntersectRight = object;
                     }
-                   // n.setY(control.get(4).getY() - n.getHeight());
 
                 }
 
-                 	// got score
             }
         }
 
@@ -315,7 +409,7 @@ public class CircusOfPlates implements World {
 
     @Override
     public String getStatus() {
-        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining+"     |      Time Remaining=" + Math.max(0, (MAX_TIME - (System.currentTimeMillis()-startTime))/1000)+" seconds";	// update status
+        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining + "     |      Time Remaining=" + Math.max(0, (MAX_TIME - (System.currentTimeMillis() - startTime)) / 1000) + " seconds";	// update status
     }
 
 }

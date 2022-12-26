@@ -18,7 +18,7 @@ import javax.swing.JPanel;
  *
  * @author youssef
  */
-public class Rectangle implements GameObject {
+public class Rectangle implements GameObject ,Shapes{
 
     public static final int SPRITE_HEIGHT = 5;
     private static final int MAX_MSTATE = 1;
@@ -118,7 +118,7 @@ public class Rectangle implements GameObject {
         return caughtByRight;
     }
 
-    public void setCaughtByRight(boolean caughtByRight) {
+    public void setcaughtByRight(boolean caughtByRight) {
         this.caughtByRight = caughtByRight;
     }
 
@@ -126,7 +126,7 @@ public class Rectangle implements GameObject {
         return caughtByLeft;
     }
 
-    public void setCaughtByLeft(boolean caughtByLeft) {
+    public void setcaughtByLeft(boolean caughtByLeft) {
         this.caughtByLeft = caughtByLeft;
     }
 

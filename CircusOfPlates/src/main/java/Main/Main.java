@@ -24,7 +24,7 @@ public class Main {
         //final GameController gameController = GameEngine.start("Circus of plates",new CircusOfPlates(800,600) );
         
         	JMenuBar  menuBar = new JMenuBar();
-		JMenu menu = new JMenu("File");
+		JMenu menu = new JMenu("Menu");
 		JMenuItem newMenuItem = new JMenuItem("New");
 		JMenuItem pauseMenuItem = new JMenuItem("Pause");
 		JMenuItem resumeMenuItem = new JMenuItem("Resume");
@@ -42,7 +42,6 @@ public class Main {
 		pauseMenuItem.addActionListener(new ActionListener() {
 		@Override public void actionPerformed(ActionEvent e) {
 				gameController.pause();
-                                long x=System.currentTimeMillis();
 			}
 		});
 		resumeMenuItem.addActionListener(new ActionListener() {
