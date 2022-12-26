@@ -83,15 +83,15 @@ public class CircusOfPlates implements World {
         heightOfCaughtRight = control.get(4).getY();
         heightOfCaughtLeft = control.get(3).getY();
 
-        //movable objects
-        for (int i = 0; i < 8; i++) {
-            Random random = new Random();
-            moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-800, -100), 50, 25, false, colors[random.nextInt(5)]));
-            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-600, -50), 70, false, colors[random.nextInt(5)]));
-            moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-500, -70), 50, 25, false, colors[random.nextInt(5)]));
-            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-550, -60), 70, false, colors[random.nextInt(5)]));
-            moving.add(new ImageObject(random.nextInt(0, 800), random.nextInt(-3000, -300), false, "/bomb.png"));
-        }
+        // movable objects
+//        for (int i = 0; i <10; i++) {
+//            Random random = new Random();
+//            moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-800, -100), 50, 25, false, colors[random.nextInt(5)]));
+//            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-600, -50), 70, false, colors[random.nextInt(5)]));
+//            moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-500, -70), 50, 25, false, colors[random.nextInt(5)]));
+//            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-550, -60), 70, false, colors[random.nextInt(5)]));
+//            //moving.add(new ImageObject(random.nextInt(0, 800), random.nextInt(-3000, -300), false, "/bomb.png"));
+//        }
     }
 
     private boolean intersect(GameObject o1, GameObject o2) {
@@ -108,31 +108,41 @@ public class CircusOfPlates implements World {
 
         //updating left stack
         if (caughtLeft.size() == 3) {
+
             score++;
             for (int i = 2; i >= 0; i--) {
+                try {
+                    control.remove(caughtLeft.get(i));
+                    caughtLeftShapes.remove(caughtLeft.get(i));
+                    if (caughtLeftShapes.isEmpty()) {
+                        System.out.println("a7a");
+                        objectToIntersectLeft = control.get(3);
 
-                control.remove(caughtLeft.get(i));
-                caughtLeftShapes.remove(caughtLeft.get(i));
-                if (caughtLeftShapes.isEmpty()) {
+                    } else {
+                        System.out.println("kkkakkaka");
+                        objectToIntersectLeft = caughtLeftShapes.get(caughtLeftShapes.size() - 1);
 
-                    objectToIntersectLeft = control.get(3);
-                } else {
-
-                    objectToIntersectLeft = caughtLeftShapes.get(caughtLeftShapes.size() - 1);
-
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
                 }
-                heightOfCaughtLeft = objectToIntersectLeft.getY();
+
             }
+            heightOfCaughtLeft = objectToIntersectLeft.getY();
             leftIndex = leftIndex - 3;
             caughtLeft.clear();
+
             if (!caughtLeftShapes.isEmpty()) {
+                System.out.println("aaaa");
                 caughtLeft.push(objectToIntersectLeft);
-                if(caughtLeftShapes.get(caughtLeftShapes.size() - 2) !=null && ((Shapes)caughtLeftShapes.get(caughtLeftShapes.size() - 2)).getColor().equals(((Shapes)objectToIntersectLeft).getColor()))  {
-                    caughtLeft.pop();
-                    caughtLeft.push(caughtLeftShapes.get(caughtLeftShapes.size() - 2));
-                    caughtLeft.push(objectToIntersectLeft);
+                try {
+                    if (!caughtLeft.isEmpty() && caughtLeftShapes.get(caughtLeftShapes.size() - 2) != null && ((Shapes) caughtLeftShapes.get(caughtLeftShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectLeft).getColor())) {
+                        caughtLeft.push(caughtLeftShapes.get(caughtLeftShapes.size() - 2));
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
                 }
-                    
+
             }
         }
 
@@ -141,25 +151,26 @@ public class CircusOfPlates implements World {
 
             score++;
             for (int i = 2; i >= 0; i--) {
-
                 control.remove(caughtRight.get(i));
                 caughtRightShapes.remove(caughtRight.get(i));
                 if (caughtRightShapes.isEmpty()) {
                     objectToIntersectRight = control.get(4);
                 } else {
-
                     objectToIntersectRight = caughtRightShapes.get(caughtRightShapes.size() - 1);
                 }
                 heightOfCaughtRight = objectToIntersectRight.getY();
             }
             rightIndex = rightIndex - 3;
             caughtRight.clear();
+
             if (!caughtRightShapes.isEmpty()) {
                 caughtRight.push(objectToIntersectRight);
-                if(caughtRightShapes.get(caughtLeftShapes.size() - 2) !=null && ((Shapes)caughtRightShapes.get(caughtRightShapes.size() - 2)).getColor().equals(((Shapes)objectToIntersectRight).getColor()))  {
-                    caughtRight.pop();
-                    caughtRight.push(caughtRightShapes.get(caughtRightShapes.size() - 2));
-                    caughtRight.push(objectToIntersectRight);
+                try {
+                    if (!caughtRight.isEmpty() && caughtRightShapes.get(caughtRightShapes.size() - 2) != null && ((Shapes) caughtRightShapes.get(caughtRightShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectRight).getColor())) {
+                        caughtRight.push(caughtRightShapes.get(caughtRightShapes.size() - 2));
+                    }
+                } catch (IndexOutOfBoundsException e) {
+                    e.printStackTrace();
                 }
             }
         }
@@ -261,18 +272,18 @@ public class CircusOfPlates implements World {
 
         }
 
-//        long diff = System.currentTimeMillis() - FlagTime;
-//        if (diff > 2000 && diff < 2500) {
-//            Random random = new Random();
-//
-//            moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-100, -20), 50, 25, false, colors[random.nextInt(5)]));
-//            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-80, -20), 70, false, colors[random.nextInt(5)]));
-//            moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-60, -20), 50, 25, false, colors[random.nextInt(5)]));
-//            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-30, -20), 70, false, colors[random.nextInt(5)]));
-//            moving.add(new ImageObject(random.nextInt(0, 800), random.nextInt(-1500, -600), false, "/bomb.png"));
-//            FlagTime = System.currentTimeMillis();
-//
-//        }
+        long diff = System.currentTimeMillis() - FlagTime;
+        if (diff > 3000 && diff < 3500) {
+            Random random = new Random();
+
+            //moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-100, -20), 50, 25, false, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-80, -20), 70, false, colors[random.nextInt(5)]));
+            //moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-60, -20), 50, 25, false, colors[random.nextInt(5)]));
+            moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-30, -20), 70, false, colors[random.nextInt(5)]));
+            //moving.add(new ImageObject(random.nextInt(0, 800), random.nextInt(-1500, -600), false, "/bomb.png"));
+            FlagTime = System.currentTimeMillis();
+
+        }
         //regenerating shapes
         for (int i = 0; i < moving.size(); i++) {
             Random random = new Random();
@@ -293,8 +304,6 @@ public class CircusOfPlates implements World {
 
         }
 
-        
-        
         //catching the falling objects
         for (int i = 0; i < moving.size(); i++) {
             GameObject n = moving.get(i);
@@ -361,7 +370,6 @@ public class CircusOfPlates implements World {
 
         return !timeout;
     }
-        
 
     @Override
     public int getSpeed() {

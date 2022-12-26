@@ -36,7 +36,8 @@ public class Main {
 		final GameController gameController = GameEngine.start("Circus of plates", new CircusOfPlates(800, 600), menuBar, Color.BLACK);
 		newMenuItem.addActionListener(new ActionListener() {
 		@Override public void actionPerformed(ActionEvent e) {
-				gameController.changeWorld(new CircusOfPlates(800, 700));
+                                
+				gameController.changeWorld(new CircusOfPlates(800, 600));
 			}
 		});
 		pauseMenuItem.addActionListener(new ActionListener() {

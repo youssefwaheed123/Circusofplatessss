@@ -19,15 +19,18 @@ import java.util.List;
  */
 public class Singleton {
 
-    private static Shapes instance = null;
-    public Singleton(Shapes shape) {
+    private static Singleton instance = null;
+    public Singleton() {
 
-        instance=shape;
+       
     }
 
-    public static Shapes getInstance() {
+    public static Singleton getInstance() {
       
-         return instance;
+        if(instance==null) {
+            instance =new Singleton();
+        }
+        return instance;
     }
 
 }
