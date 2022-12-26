@@ -101,8 +101,10 @@ public class CircusOfPlates implements World {
     public boolean refresh() {
         boolean timeout = System.currentTimeMillis() - startTime > MAX_TIME;
         if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0) {
+            livesRemaining=0;
             return false;
         }
+        
         //updating left stack
         if (caughtLeft.size() == 3) {
             score++;
@@ -126,6 +128,8 @@ public class CircusOfPlates implements World {
             caughtLeft.push(objectToIntersectLeft);
             }
         }
+        
+        //updating right stack
         if (caughtRight.size() == 3) {
             System.out.println("aa");
             score++;
@@ -173,7 +177,7 @@ public class CircusOfPlates implements World {
             }
         }
 
-        //setting the positions of the controlable objects so they cant pass over the screens width
+        //setting the limits of the controlable objects 
         if (control.get(3).getX() <= 0) {
 
             control.get(0).setX(40);
@@ -245,6 +249,7 @@ public class CircusOfPlates implements World {
 
         }
 
+         //regenerating shapes
         long diff = System.currentTimeMillis() - FlagTime;
         if (diff > 1500 && diff < 2000) {
             Random random = new Random();
@@ -256,7 +261,7 @@ public class CircusOfPlates implements World {
             FlagTime = System.currentTimeMillis();
 
         }
-        //regenerating shapes 
+        
         for (int i = 0; i < moving.size(); i++) {
             Random random = new Random();
             gameObject = moving.get(i);
