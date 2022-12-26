@@ -16,7 +16,7 @@ import java.awt.image.BufferedImage;
  * @author youssef
  */
 public class ClownStick implements GameObject{
-    	public static final int SPRITE_HEIGHT = 130;
+    	public static final int SPRITE_HEIGHT = 80;
         public static final int SPRITE_Width = 5;
 	private static final int MAX_MSTATE = 1;
 	// an array of sprite images that are drawn sequentially

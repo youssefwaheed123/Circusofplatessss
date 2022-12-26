@@ -72,10 +72,10 @@ public class CircusOfPlates implements World {
 
         //controlable objects
         control.add(new ImageObject(300, 410, true, "/clownn.png"));
-        control.add(new ClownStick(300, 385, true, Color.GREEN));
-        control.add(new ClownStick(433, 325, true, Color.YELLOW));
-        control.add(new Rectangle(260, 360, 80, 30, true, Color.BLACK));
-        control.add(new Rectangle(393, 300, 80, 30, true, Color.BLACK));
+        control.add(new ClownStick(300, 430, true, Color.GREEN));
+        control.add(new ClownStick(433, 370, true, Color.YELLOW));
+        control.add(new Rectangle(260, 420, 80, 10, true, Color.BLACK));
+        control.add(new Rectangle(393, 360, 80, 10, true, Color.BLACK));
         objectToIntersectRight = control.get(4);
         objectToIntersectLeft = control.get(3);
         leftIndex = 0;
