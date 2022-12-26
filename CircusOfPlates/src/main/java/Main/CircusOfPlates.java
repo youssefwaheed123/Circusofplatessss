@@ -100,7 +100,7 @@ public class CircusOfPlates implements World {
     @Override
     public boolean refresh() {
         boolean timeout = System.currentTimeMillis() - startTime > MAX_TIME;
-        if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0) {
+        if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0 || objectToIntersectLeft instanceof ImageObject ) {
             livesRemaining=0;
             return false;
         }
@@ -131,7 +131,7 @@ public class CircusOfPlates implements World {
         
         //updating right stack
         if (caughtRight.size() == 3) {
-            System.out.println("aa");
+
             score++;
             for (int i = 2; i >= 0; i--) {
 
@@ -251,13 +251,14 @@ public class CircusOfPlates implements World {
 
          //regenerating shapes
         long diff = System.currentTimeMillis() - FlagTime;
-        if (diff > 1500 && diff < 2000) {
+        if (diff > 2000 && diff < 2500) {
             Random random = new Random();
 
             moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-100, -20), 50, 25, false, colors[random.nextInt(5)]));
             moving.add(new Plate(random.nextInt(200, 350), random.nextInt(-80, -20), 70, false, colors[random.nextInt(5)]));
             moving.add(new Rectangle(random.nextInt(400, 550), random.nextInt(-60, -20), 50, 25, false, colors[random.nextInt(5)]));
             moving.add(new Plate(random.nextInt(600, 800), random.nextInt(-30, -20), 70, false, colors[random.nextInt(5)]));
+            moving.add(new ImageObject(random.nextInt(0,800),random.nextInt(-1500,-600), false, "/bomb.png"));
             FlagTime = System.currentTimeMillis();
 
         }
@@ -267,7 +268,12 @@ public class CircusOfPlates implements World {
             gameObject = moving.get(i);
             if (gameObject.getY() > 600) {
                 gameObject.setX(gameObject.getX());
+                if(gameObject instanceof ImageObject) {
+                    gameObject.setY(random.nextInt(-1000, -500));
+                }
+                else {
                 gameObject.setY(random.nextInt(-200, 0));
+                }
                 // moving.remove(gameObject);
                 livesCounter++;
             }
@@ -282,7 +288,10 @@ public class CircusOfPlates implements World {
         for (int i = 0; i < moving.size(); i++) {
             GameObject n = moving.get(i);
             if (intersect(objectToIntersectLeft, n) || intersect(objectToIntersectRight, n)) {
-
+                if(n instanceof ImageObject) {
+                    objectToIntersectLeft=n;
+                }
+                else{      
                 if (intersect(objectToIntersectLeft, n)) {
                     if (n instanceof Plate) {
 
@@ -372,6 +381,7 @@ public class CircusOfPlates implements World {
                 }
 
             }
+        }
         }
 
         return !timeout;
