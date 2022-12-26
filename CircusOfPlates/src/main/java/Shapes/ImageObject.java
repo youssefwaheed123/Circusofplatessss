@@ -5,6 +5,7 @@
 package Shapes;
 
 import eg.edu.alexu.csd.oop.game.GameObject;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -13,7 +14,7 @@ import javax.imageio.ImageIO;
  *
  * @author youssef
  */
-public class ImageObject implements GameObject{
+public class ImageObject implements GameObject,Shapes{
     
     private static final int MAX_MSTATE = 1;
 	// an array of sprite images that are drawn sequentially
@@ -23,6 +24,8 @@ public class ImageObject implements GameObject{
 	private boolean visible;
 	private int type;
         boolean horizontalOnly;
+        boolean caughtByLeft;
+        boolean caughtByRight;
 	
 	public ImageObject(int posX, int posY,boolean horizontal, String path){
 		this(posX, posY, horizontal,path, 0);
@@ -97,6 +100,32 @@ public class ImageObject implements GameObject{
 	public void setType(int type) {
 		this.type = type;
 	}
+
+    @Override
+    public Color getColor() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean isCaughtByLeft() {
+        return caughtByLeft;
+    }
+
+    @Override
+    public void setcaughtByLeft(boolean x) {
+        this.caughtByLeft=x;
+    }
+
+    @Override
+    public boolean isCaughtByRight() {
+        return caughtByRight;
+    }
+
+    @Override
+    public void setcaughtByRight(boolean x) {
+        this.caughtByRight=x;
+    }
+
 
 
 	
