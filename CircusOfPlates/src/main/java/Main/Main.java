@@ -42,11 +42,13 @@ public class Main {
 		pauseMenuItem.addActionListener(new ActionListener() {
 		@Override public void actionPerformed(ActionEvent e) {
 				gameController.pause();
+                                long x=System.currentTimeMillis();
 			}
 		});
 		resumeMenuItem.addActionListener(new ActionListener() {
 			@Override public void actionPerformed(ActionEvent e) {
 				gameController.resume();
+                                
 			}
 		});
 	}
