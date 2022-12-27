@@ -97,7 +97,7 @@ public class CircusOfPlatesBegginer implements World{
         }
 
         //updating left stack
-        if (caughtLeft.size() == 3) {
+       if (caughtLeft.size() == 3) {
 
             score++;
             for (int i = 2; i >= 0; i--) {
@@ -123,16 +123,19 @@ public class CircusOfPlatesBegginer implements World{
             caughtLeft.clear();
 
             if (!caughtLeftShapes.isEmpty()) {
-                System.out.println("aaaa");
-                caughtLeft.push(objectToIntersectLeft);
-                try {
-                    if (!caughtLeft.isEmpty() && caughtLeftShapes.get(caughtLeftShapes.size() - 2) != null && ((Shapes) caughtLeftShapes.get(caughtLeftShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectLeft).getColor())) {
-                        caughtLeft.push(caughtLeftShapes.get(caughtLeftShapes.size() - 2));
+                if (caughtLeftShapes.size() == 1) {
+                    caughtLeft.push(objectToIntersectLeft);
+                } else {
+                    try {
+                        if ( caughtLeftShapes.get(caughtLeftShapes.size() - 2) != null && ((Shapes) caughtLeftShapes.get(caughtLeftShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectLeft).getColor())) {
+                            caughtLeft.push(objectToIntersectLeft);
+                            caughtLeft.push(caughtLeftShapes.get(caughtLeftShapes.size() - 2));
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
                     }
-                } catch (IndexOutOfBoundsException e) {
-                    e.printStackTrace();
-                }
 
+                }
             }
         }
 
@@ -154,13 +157,17 @@ public class CircusOfPlatesBegginer implements World{
             caughtRight.clear();
 
             if (!caughtRightShapes.isEmpty()) {
-                caughtRight.push(objectToIntersectRight);
-                try {
-                    if (!caughtRight.isEmpty() && caughtRightShapes.get(caughtRightShapes.size() - 2) != null && ((Shapes) caughtRightShapes.get(caughtRightShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectRight).getColor())) {
-                        caughtRight.push(caughtRightShapes.get(caughtRightShapes.size() - 2));
+                if (caughtRightShapes.size() == 1) {
+                    caughtRight.push(objectToIntersectRight);
+                } else {
+                    try {
+                        if ( caughtRightShapes.get(caughtRightShapes.size() - 2) != null && ((Shapes) caughtRightShapes.get(caughtRightShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectRight).getColor())) {
+                            caughtRight.push(objectToIntersectRight);
+                            caughtRight.push(caughtRightShapes.get(caughtRightShapes.size() - 2));
+                        }
+                    } catch (IndexOutOfBoundsException e) {
+                        e.printStackTrace();
                     }
-                } catch (IndexOutOfBoundsException e) {
-                    e.printStackTrace();
                 }
             }
         }
