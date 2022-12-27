@@ -4,10 +4,13 @@
  */
 package Main;
 
+import ObserverPattern.Subject;
 import eg.edu.alexu.csd.oop.game.GameEngine;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -16,14 +19,18 @@ import javax.swing.JMenuItem;
  *
  * @author youssef
  */
-public class DifficultyMenu extends javax.swing.JFrame {
+public class DifficultyMenu extends javax.swing.JFrame implements Subject{
 
+    private ArrayList<StartMenu> observers = new ArrayList<>();
+    private boolean state;
     /**
      * Creates new form DifficultyMenu
      */
     public DifficultyMenu() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setTitle("Select a difficulty");
+        
     }
 
     /**
@@ -42,7 +49,12 @@ public class DifficultyMenu extends javax.swing.JFrame {
 
         jButton4.setText("jButton4");
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         begginer.setText("Beginner");
         begginer.addActionListener(new java.awt.event.ActionListener() {
@@ -200,6 +212,11 @@ public class DifficultyMenu extends javax.swing.JFrame {
         });
     }//GEN-LAST:event_begginerActionPerformed
 
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        // TODO add your handling code here:
+        this.setVisualState(false);
+    }//GEN-LAST:event_formWindowClosing
+
     /**
      * @param args the command line arguments
      */
@@ -241,4 +258,33 @@ public class DifficultyMenu extends javax.swing.JFrame {
     private javax.swing.JButton intermediate;
     private javax.swing.JButton jButton4;
     // End of variables declaration//GEN-END:variables
+
+ 
+
+
+
+    @Override
+    public boolean getVisualState() {
+        return state;
+    }
+
+    @Override
+    public void setVisualState(boolean state) {
+        this.state = state;
+        this.setVisible(state);
+        notifyAllObservers();
+    }
+    @Override
+     public void notifyAllObservers() {
+        for (int i = 0; i < observers.size(); i++) {
+            observers.get(i).update();
+        }
+    }
+
+    @Override
+    public void attatch(StartMenu observer) {
+        observers.add(observer);
+    }
+
+
 }

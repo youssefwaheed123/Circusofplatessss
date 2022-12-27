@@ -4,6 +4,7 @@
  */
 package Main;
 
+import ObserverPattern.Observer;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -24,14 +25,17 @@ import javax.swing.JMenuItem;
  *
  * @author youssef
  */
-public class StartMenu extends javax.swing.JFrame {
+public class StartMenu extends javax.swing.JFrame implements Observer{
 
+    DifficultyMenu difficulty;
     /**
      * Creates new form StartMenu
      */
     public StartMenu() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setTitle("Circus of plates");
+        
 
     }
 
@@ -93,9 +97,11 @@ public class StartMenu extends javax.swing.JFrame {
 
     private void newGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newGameActionPerformed
         // TODO add your handling code here:
-        DifficultyMenu difficulty=new DifficultyMenu();
-        this.setVisible(false);
-        difficulty.setVisible(true);
+        if(difficulty == null) {
+         difficulty=new DifficultyMenu();
+        }
+        difficulty.attatch(this);
+        difficulty.setVisualState(true);
         
 
 
@@ -146,4 +152,17 @@ public class StartMenu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JButton newGame;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void update() {
+        boolean state = difficulty.getVisualState();
+        if (state == false) {
+            this.setVisible(true);
+
+        }
+        if (state == true) {
+            this.setVisible(false);
+
+        } 
+    }
 }
