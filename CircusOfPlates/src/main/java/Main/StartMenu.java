@@ -102,9 +102,7 @@ public class StartMenu extends javax.swing.JFrame implements Observer{
         }
         difficulty.attatch(this);
         difficulty.setVisualState(true);
-        
-
-
+        difficulty.setLocationRelativeTo(null);
     }//GEN-LAST:event_newGameActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
