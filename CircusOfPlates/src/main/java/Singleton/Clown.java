@@ -17,20 +17,22 @@ import java.util.List;
  *
  * @author youssef
  */
-public class Singleton {
+public class Clown {
 
-    private static Singleton instance = null;
-    public Singleton() {
-
-       
+    private static Clown instance = null;
+    private Clown() {
+ 
     }
 
-    public static Singleton getInstance() {
+    public static Clown getInstance() {
       
         if(instance==null) {
-            instance =new Singleton();
+            instance =new Clown();
         }
         return instance;
+    }
+    public Shapes createClown() {
+        return new ImageObject(300, 410, true, "/clownn.png");
     }
 
 }
