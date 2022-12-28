@@ -23,7 +23,7 @@ import java.util.Stack;
  * @author youssef
  */
 public class CircusOfPlatesBegginer implements World{
-         private static int MAX_TIME = 1 * 90 * 1000;	// 90 seconds
+    private static int MAX_TIME = 1 * 90 * 1000;	// 90 seconds
     private Color[] colors = {Color.RED, Color.BLUE};
     private int score = 0;
     private long startTime = System.currentTimeMillis();
@@ -59,6 +59,12 @@ public class CircusOfPlatesBegginer implements World{
         constant.add(new ImageObject(30, 0, true, "/heart.png"));
         constant.add(new ImageObject(60, 0, false, "/heart.png"));
         constant.add(new ImageObject(90, 0, false, "/heart.png"));
+        constant.add(new ImageObject(30, 0, true, "/brokenHeart.png"));
+        constant.add(new ImageObject(60, 0, false, "/brokenHeart.png"));
+        constant.add(new ImageObject(90, 0, false, "/brokenHeart.png"));
+        ((ImageObject)constant.get(4)).setVisible(false);
+        ((ImageObject)constant.get(5)).setVisible(false);
+        ((ImageObject)constant.get(6)).setVisible(false);
 
         //controlable objects
         control.add(new ImageObject(300, 410, true, "/clownn.png"));
@@ -90,7 +96,7 @@ public class CircusOfPlatesBegginer implements World{
 
     @Override
     public boolean refresh() {
-        boolean timeout = System.currentTimeMillis() - startTime > MAX_TIME;
+        //boolean timeout = System.currentTimeMillis() - startTime > MAX_TIME;
         if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0 || objectToIntersectLeft instanceof ImageObject || objectToIntersectRight instanceof ImageObject) {
             livesRemaining = 0;
             return false;
@@ -109,7 +115,7 @@ public class CircusOfPlatesBegginer implements World{
                         objectToIntersectLeft = control.get(3);
 
                     } else {
-                        System.out.println("kkkakkaka");
+                        
                         objectToIntersectLeft = caughtLeftShapes.get(caughtLeftShapes.size() - 1);
 
                     }
@@ -257,14 +263,17 @@ public class CircusOfPlatesBegginer implements World{
         if (livesRemaining == 0) {
             livesCounter = 0;
             return false;
-        } else if (livesCounter == 150) {
+        } else if (livesCounter == 200) {
             ((ImageObject) constant.get(3)).setVisible(false);
+            ((ImageObject) constant.get(6)).setVisible(true);
             livesRemaining = 2;
-        } else if (livesCounter == 150) {
+        } else if (livesCounter == 400) {
             ((ImageObject) constant.get(2)).setVisible(false);
+            ((ImageObject) constant.get(5)).setVisible(true);
             livesRemaining = 1;
-        } else if (livesCounter == 350) {
+        } else if (livesCounter == 600) {
             ((ImageObject) constant.get(1)).setVisible(false);
+            ((ImageObject) constant.get(4)).setVisible(true);
             livesRemaining = 0;
 
         }
@@ -364,7 +373,7 @@ public class CircusOfPlatesBegginer implements World{
             }
         }
 
-        return !timeout;
+        return true;
     }
 
     @Override
@@ -404,6 +413,6 @@ public class CircusOfPlatesBegginer implements World{
 
     @Override
     public String getStatus() {
-        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining + "     |      Time Remaining=" + Math.max(0, (MAX_TIME - (System.currentTimeMillis() - startTime)) / 1000) + " seconds";	// update status
+        return "Please Use Arrows To Move     |      Location = " + control.get(0).getX() + "," + control.get(0).getY() + "      |     Score = " + score + "     |      Lives Remaining =" + livesRemaining;	// update status
     }
 }
