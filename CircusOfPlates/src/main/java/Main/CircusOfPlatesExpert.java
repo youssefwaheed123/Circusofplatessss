@@ -69,9 +69,9 @@ public class CircusOfPlatesExpert implements World {
         constant.add(new ImageObject(30, 0, true, "/heart.png"));
         constant.add(new ImageObject(60, 0, false, "/heart.png"));
         constant.add(new ImageObject(90, 0, false, "/heart.png"));
-        constant.add(new ImageObject(30, 0, true, "/brokenHeart.png"));
-        constant.add(new ImageObject(60, 0, false, "/brokenHeart.png"));
-        constant.add(new ImageObject(90, 0, false, "/brokenHeart.png"));
+        constant.add(new ImageObject(30, 2, true, "/brokenHeart.png"));
+        constant.add(new ImageObject(60, 2, false, "/brokenHeart.png"));
+        constant.add(new ImageObject(90, 2, false, "/brokenHeart.png"));
         ((ImageObject)constant.get(4)).setVisible(false);
         ((ImageObject)constant.get(5)).setVisible(false);
         ((ImageObject)constant.get(6)).setVisible(false);
