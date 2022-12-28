@@ -11,6 +11,7 @@ import Shapes.ImageObject;
 import Shapes.Plate;
 import Shapes.Rectangle;
 import Shapes.Shapes;
+import Singleton.Clown;
 import eg.edu.alexu.csd.oop.game.GameObject;
 import eg.edu.alexu.csd.oop.game.World;
 import java.awt.Color;
@@ -76,7 +77,8 @@ public class CircusOfPlatesExpert implements World {
         ((ImageObject)constant.get(5)).setVisible(false);
         ((ImageObject)constant.get(6)).setVisible(false);
         //controlable objects
-        control.add(new ImageObject(300, 410, true, "/clownn.png"));
+         Clown clown= Clown.getInstance();
+        control.add((GameObject) clown.createClown());  
         control.add(new ClownStick(300, 430, true, Color.GREEN));
         control.add(new ClownStick(433, 370, true, Color.YELLOW));
         control.add(new Rectangle(260, 420, 80, 10, true, Color.BLACK));
