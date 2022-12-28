@@ -5,6 +5,8 @@
 package Main;
 
 import ObserverPattern.Subject;
+import State.StartState;
+import State.StopState;
 import eg.edu.alexu.csd.oop.game.GameEngine;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -22,7 +24,9 @@ import javax.swing.JMenuItem;
 public class DifficultyMenu extends javax.swing.JFrame implements Subject{
 
     private ArrayList<StartMenu> observers = new ArrayList<>();
-    private boolean state;
+    private boolean VisualState;
+    private StartState startState;
+    private StopState stopState;
     /**
      * Creates new form DifficultyMenu
      */
@@ -118,6 +122,8 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject{
         menu.add(resumeMenuItem);
         menuBar.add(menu);
         final GameEngine.GameController gameController = GameEngine.start("Circus of plates", new CircusOfPlatesExpert(800, 600), menuBar, Color.BLACK);
+        stopState=new StopState(gameController);
+       startState= new StartState(gameController);
         newMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -128,13 +134,15 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject{
         pauseMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameController.pause();
+             //   gameController.pause();
+             stopState.changeState();
             }
         });
         resumeMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameController.resume();
+                //gameController.resume();
+                startState.changeState();
 
             }
         });
@@ -153,7 +161,9 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject{
         menu.add(pauseMenuItem);
         menu.add(resumeMenuItem);
         menuBar.add(menu);
-        final GameEngine.GameController gameController = GameEngine.start("Circus of plates", new CircusOfPlatesIntermediate(800, 600), menuBar, Color.BLACK);
+       final GameEngine.GameController gameController = GameEngine.start("Circus of plates", new CircusOfPlatesIntermediate(800, 600), menuBar, Color.BLACK);
+       stopState=new StopState(gameController);
+       startState= new StartState(gameController);
         newMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -164,14 +174,15 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject{
         pauseMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameController.pause();
+             //   gameController.pause();
+             stopState.changeState();
             }
         });
         resumeMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameController.resume();
-
+                //gameController.resume();
+             startState.changeState();
             }
         });
     }//GEN-LAST:event_intermediateActionPerformed
@@ -190,6 +201,8 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject{
         menu.add(resumeMenuItem);
         menuBar.add(menu);
         final GameEngine.GameController gameController = GameEngine.start("Circus of plates", new CircusOfPlatesBegginer(800, 600), menuBar, Color.BLACK);
+        stopState=new StopState(gameController);
+       startState= new StartState(gameController);
         newMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -200,14 +213,15 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject{
         pauseMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameController.pause();
+               // gameController.pause();
+               stopState.changeState();
             }
         });
         resumeMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                gameController.resume();
-
+               // gameController.resume();
+             startState.changeState();
             }
         });
     }//GEN-LAST:event_begginerActionPerformed
@@ -265,12 +279,12 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject{
 
     @Override
     public boolean getVisualState() {
-        return state;
+        return VisualState;
     }
 
     @Override
     public void setVisualState(boolean state) {
-        this.state = state;
+        this.VisualState = state;
         this.setVisible(state);
         notifyAllObservers();
     }

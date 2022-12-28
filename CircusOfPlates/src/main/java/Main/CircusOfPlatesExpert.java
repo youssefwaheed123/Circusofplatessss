@@ -287,7 +287,7 @@ public class CircusOfPlatesExpert implements World {
         }
 
         long diff = System.currentTimeMillis() - FlagTime;
-        if (diff > 3000 && diff < 3500) {
+        if (diff > 1500 && diff < 2000) {
             Random random = new Random();
 
             moving.add(new Rectangle(random.nextInt(0, 150), random.nextInt(-100, -20), 50, 25, false, colors[random.nextInt(5)]));
