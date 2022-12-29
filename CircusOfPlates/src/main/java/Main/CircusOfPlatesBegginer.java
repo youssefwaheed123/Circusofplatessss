@@ -23,7 +23,8 @@ import java.util.Stack;
  *
  * @author youssef
  */
-public class CircusOfPlatesBegginer implements World{
+public class CircusOfPlatesBegginer implements World {
+
     private static int MAX_TIME = 1 * 90 * 1000;	// 90 seconds
     private Color[] colors = {Color.RED, Color.BLUE};
     private int score = 0;
@@ -62,13 +63,13 @@ public class CircusOfPlatesBegginer implements World{
         constant.add(new ImageObject(90, 0, false, "/heart.png"));
         constant.add(new ImageObject(30, 2, true, "/brokenHeart.png"));
         constant.add(new ImageObject(60, 2, false, "/brokenHeart.png"));
-        constant.add(new ImageObject(90,2, false, "/brokenHeart.png"));
-        ((ImageObject)constant.get(4)).setVisible(false);
-        ((ImageObject)constant.get(5)).setVisible(false);
-        ((ImageObject)constant.get(6)).setVisible(false);
+        constant.add(new ImageObject(90, 2, false, "/brokenHeart.png"));
+        ((ImageObject) constant.get(4)).setVisible(false);
+        ((ImageObject) constant.get(5)).setVisible(false);
+        ((ImageObject) constant.get(6)).setVisible(false);
 
         //controlable objects
-        Clown clown= Clown.getInstance();
+        Clown clown = Clown.getInstance();
         control.add((GameObject) clown.createClown());
         control.add(new ClownStick(300, 430, true, Color.GREEN));
         control.add(new ClownStick(433, 370, true, Color.YELLOW));
@@ -105,7 +106,7 @@ public class CircusOfPlatesBegginer implements World{
         }
 
         //updating left stack
-       if (caughtLeft.size() == 3) {
+        if (caughtLeft.size() == 3) {
 
             score++;
             for (int i = 2; i >= 0; i--) {
@@ -117,7 +118,7 @@ public class CircusOfPlatesBegginer implements World{
                         objectToIntersectLeft = control.get(3);
 
                     } else {
-                        
+
                         objectToIntersectLeft = caughtLeftShapes.get(caughtLeftShapes.size() - 1);
 
                     }
@@ -129,21 +130,20 @@ public class CircusOfPlatesBegginer implements World{
             heightOfCaughtLeft = objectToIntersectLeft.getY();
             leftIndex = leftIndex - 3;
             caughtLeft.clear();
-
-            if (!caughtLeftShapes.isEmpty()) {
-                if (caughtLeftShapes.size() == 1) {
-                    caughtLeft.push(objectToIntersectLeft);
-                } else {
-                    try {
-                        if ( caughtLeftShapes.get(caughtLeftShapes.size() - 2) != null && ((Shapes) caughtLeftShapes.get(caughtLeftShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectLeft).getColor())) {
-                            caughtLeft.push(objectToIntersectLeft);
-                            caughtLeft.push(caughtLeftShapes.get(caughtLeftShapes.size() - 2));
-                        }
-                    } catch (IndexOutOfBoundsException e) {
-                        e.printStackTrace();
+            try {
+                if (!caughtLeftShapes.isEmpty()) {
+                    if (caughtLeftShapes.size() == 1) {
+                        caughtLeft.push(objectToIntersectLeft);
+                    } else if (caughtLeftShapes.get(caughtLeftShapes.size() - 2) != null && ((Shapes) caughtLeftShapes.get(caughtLeftShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectLeft).getColor())) {
+                        caughtLeft.push(objectToIntersectLeft);
+                        caughtLeft.push(caughtLeftShapes.get(caughtLeftShapes.size() - 2));
+                    } else {
+                        caughtLeft.push(objectToIntersectLeft);
                     }
 
                 }
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
             }
         }
 
@@ -163,20 +163,20 @@ public class CircusOfPlatesBegginer implements World{
             }
             rightIndex = rightIndex - 3;
             caughtRight.clear();
+            try {
+                if (!caughtRightShapes.isEmpty()) {
+                    if (caughtRightShapes.size() == 1) {
+                        caughtRight.push(objectToIntersectRight);
+                    } else if (caughtRightShapes.get(caughtRightShapes.size() - 2) != null && ((Shapes) caughtRightShapes.get(caughtRightShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectRight).getColor())) {
+                        caughtRight.push(objectToIntersectRight);
+                        caughtRight.push(caughtRightShapes.get(caughtRightShapes.size() - 2));
 
-            if (!caughtRightShapes.isEmpty()) {
-                if (caughtRightShapes.size() == 1) {
-                    caughtRight.push(objectToIntersectRight);
-                } else {
-                    try {
-                        if ( caughtRightShapes.get(caughtRightShapes.size() - 2) != null && ((Shapes) caughtRightShapes.get(caughtRightShapes.size() - 2)).getColor().equals(((Shapes) objectToIntersectRight).getColor())) {
-                            caughtRight.push(objectToIntersectRight);
-                            caughtRight.push(caughtRightShapes.get(caughtRightShapes.size() - 2));
-                        }
-                    } catch (IndexOutOfBoundsException e) {
-                        e.printStackTrace();
+                    } else {
+                        caughtRight.push(objectToIntersectRight);
                     }
                 }
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
             }
         }
 
