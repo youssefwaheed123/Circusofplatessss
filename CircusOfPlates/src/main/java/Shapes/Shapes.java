@@ -5,6 +5,7 @@
 package Shapes;
 
 import java.awt.Color;
+import java.util.List;
 
 /**
  *
@@ -17,5 +18,6 @@ public interface Shapes {
     public boolean isCaughtByRight();
     public void setcaughtByRight(boolean x);
     public void setVisible(boolean x);
+   
     
 }

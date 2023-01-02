@@ -12,6 +12,7 @@ import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
+import java.util.List;
 import javax.swing.JPanel;
 
 /**
@@ -129,5 +130,6 @@ public class Rectangle implements GameObject ,Shapes{
     public void setcaughtByLeft(boolean caughtByLeft) {
         this.caughtByLeft = caughtByLeft;
     }
+
 
 }
