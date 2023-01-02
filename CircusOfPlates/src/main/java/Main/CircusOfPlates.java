@@ -26,7 +26,8 @@ import java.util.Stack;
  * @author youssef
  */
 public class CircusOfPlates implements World {
-
+    
+    private long startTime= System.currentTimeMillis();
     private int score = 0;
     private final int width;
     private final int height;
@@ -105,9 +106,13 @@ public class CircusOfPlates implements World {
     @Override
     public boolean refresh() {
         if (objectToIntersectLeft == control.get(3) || objectToIntersectRight == control.get(4)) {
+
+            if(constant.size()>7) {
             for (int i = 7; i < constant.size(); i++) {
-                ((ImageObject) constant.get(i)).setVisible(false);
+                constant.remove(i);
             }
+            }
+            
         }
         if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0 || !checkLives() || objectToIntersectLeft instanceof ImageObject) {
             livesRemaining = 0;
@@ -190,7 +195,7 @@ public class CircusOfPlates implements World {
             if (intersect(objectToIntersectLeft, n) || intersect(objectToIntersectRight, n)) {
                 try {
 
-                    if (n instanceof ImageObject && intersect(objectToIntersectLeft, n)) {
+                    if (n instanceof ImageObject && intersect(objectToIntersectLeft, n)) {                      
                         constant.add(shapesFactory.getInstance(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "ImageObject"));
                         if (!gameStrategy.bombEndsGame()) {
                             for (int j = caughtLeftShapes.size() - 1; j >= 0; j--) {
