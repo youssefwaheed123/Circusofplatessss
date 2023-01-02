@@ -8,6 +8,8 @@ import eg.edu.alexu.csd.oop.game.GameObject;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 
 /**
@@ -16,7 +18,7 @@ import javax.imageio.ImageIO;
  */
 public class ImageObject implements GameObject,Shapes{
     
-    private static final int MAX_MSTATE = 1;
+    private static final int MAX_MSTATE = 11;
 	// an array of sprite images that are drawn sequentially
 	private BufferedImage[] spriteImages = new BufferedImage[MAX_MSTATE];
 	private int x;
@@ -39,11 +41,54 @@ public class ImageObject implements GameObject,Shapes{
                 horizontalOnly=horizontal;
 		// create a bunch of buffered images and place into an array, to be displayed sequentially
 		try {
+                    if(path.equalsIgnoreCase("/explosion0.gif")){
 			spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[1] = ImageIO.read(getClass().getResourceAsStream("/explosion1.GIF"));
+                        spriteImages[2] = ImageIO.read(getClass().getResourceAsStream("/explosion2.gif"));
+                        spriteImages[3] = ImageIO.read(getClass().getResourceAsStream("/explosion3.gif"));
+                        spriteImages[4] = ImageIO.read(getClass().getResourceAsStream("/explosion4.gif"));
+                        spriteImages[5] = ImageIO.read(getClass().getResourceAsStream("/explosion5.gif"));
+                        spriteImages[6] = ImageIO.read(getClass().getResourceAsStream("/explosion14.gif"));
+                        spriteImages[7] = ImageIO.read(getClass().getResourceAsStream("/explosion15.gif"));
+                        spriteImages[8] = ImageIO.read(getClass().getResourceAsStream("/explosion16.gif"));
+                        spriteImages[9] = ImageIO.read(getClass().getResourceAsStream("/explosion17.gif"));
+                        spriteImages[10] = ImageIO.read(getClass().getResourceAsStream("/explosion18.gif"));
+                      
+                    }else if(path.equalsIgnoreCase("/bomb.png"))
+                    {
+                        spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[1] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                        spriteImages[2] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[3] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                        spriteImages[4] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[5] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                        spriteImages[6] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[7] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                        spriteImages[8] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[9] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                        spriteImages[10] = ImageIO.read(getClass().getResourceAsStream(path));
+
+                    }else {
+                        spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[1] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[2] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[3] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[4] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[5] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[6] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[7] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[8] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[9] = ImageIO.read(getClass().getResourceAsStream(path));
+                        spriteImages[10] = ImageIO.read(getClass().getResourceAsStream(path));
+
+                        
+                    }
+                        
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
+       
         
 
 	@Override

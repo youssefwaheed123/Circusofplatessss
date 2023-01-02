@@ -28,7 +28,7 @@ public class ExpertStrategy implements Strategy{
 
     @Override
     public int getSpeed() {
-        return 5;
+        return 4;
     }
 
     @Override

@@ -104,7 +104,11 @@ public class CircusOfPlates implements World {
 
     @Override
     public boolean refresh() {
-
+        if(objectToIntersectLeft == control.get(3) || objectToIntersectRight == control.get(4)) {
+            for(int i=7;i<constant.size();i++) {
+                ((ImageObject)constant.get(i)).setVisible(false);
+            }
+        }
         if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0 || !checkLives() || objectToIntersectLeft instanceof ImageObject) {
             livesRemaining = 0;
             return false;
@@ -187,6 +191,7 @@ public class CircusOfPlates implements World {
                 try {
 
                     if (n instanceof ImageObject && intersect(objectToIntersectLeft, n)) {
+                        constant.add(shapesFactory.getInstance(n.getX()-50, n.getY()-80, 0, 0, false, Color.yellow, "/explosion0.gif", "ImageObject"));
                         if (!gameStrategy.bombEndsGame()) {
                             for (int j = caughtLeftShapes.size() - 1; j >= 0; j--) {
                                 control.remove(caughtLeftShapes.get(j));
@@ -196,11 +201,13 @@ public class CircusOfPlates implements World {
                             moving.remove(n);
                             caughtLeftShapes.clear();
                             heightOfCaughtLeft = control.get(3).getY();
+                            
                         } else {
                             objectToIntersectLeft = n;
                         }
 
                     } else if (n instanceof ImageObject && intersect(objectToIntersectRight, n)) {
+                         constant.add(shapesFactory.getInstance(n.getX()-50, n.getY()-80, 0, 0, false, Color.yellow, "/explosion0.gif", "ImageObject"));
                         if (!gameStrategy.bombEndsGame()) {
                             for (int j = caughtRightShapes.size() - 1; j >= 0; j--) {
                                 control.remove(caughtRightShapes.get(j));
@@ -281,12 +288,12 @@ public class CircusOfPlates implements World {
 
     @Override
     public int getSpeed() {
-        return 30;
+        return 10;
     }
 
     @Override
     public int getControlSpeed() {
-        return 8;
+        return 20;
     }
 
     @Override
