@@ -16,135 +16,149 @@ import javax.imageio.ImageIO;
  *
  * @author youssef
  */
-public class ImageObject implements GameObject,Shapes{
-    
-    private static final int MAX_MSTATE = 11;
-	// an array of sprite images that are drawn sequentially
-	private BufferedImage[] spriteImages = new BufferedImage[MAX_MSTATE];
-	private int x;
-	private int y;
-	private boolean visible;
-	private int type;
-        boolean horizontalOnly;
-        boolean caughtByLeft;
-        boolean caughtByRight;
-	
-	public ImageObject(int posX, int posY,boolean horizontal, String path){
-		this(posX, posY, horizontal,path, 0);
-	}
-	
-	public ImageObject(int posX, int posY,boolean horizontal, String path, int type){
-		this.x = posX;
-		this.y = posY;
-		this.type = type;
-		this.visible = true;
-                horizontalOnly=horizontal;
-		// create a bunch of buffered images and place into an array, to be displayed sequentially
-		try {
-                    if(path.equalsIgnoreCase("/explosion0.gif")){
-			spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[1] = ImageIO.read(getClass().getResourceAsStream("/explosion1.GIF"));
-                        spriteImages[2] = ImageIO.read(getClass().getResourceAsStream("/explosion2.gif"));
-                        spriteImages[3] = ImageIO.read(getClass().getResourceAsStream("/explosion3.gif"));
-                        spriteImages[4] = ImageIO.read(getClass().getResourceAsStream("/explosion4.gif"));
-                        spriteImages[5] = ImageIO.read(getClass().getResourceAsStream("/explosion5.gif"));
-                        spriteImages[6] = ImageIO.read(getClass().getResourceAsStream("/explosion14.gif"));
-                        spriteImages[7] = ImageIO.read(getClass().getResourceAsStream("/explosion15.gif"));
-                        spriteImages[8] = ImageIO.read(getClass().getResourceAsStream("/explosion16.gif"));
-                        spriteImages[9] = ImageIO.read(getClass().getResourceAsStream("/explosion17.gif"));
-                        spriteImages[10] = ImageIO.read(getClass().getResourceAsStream("/explosion18.gif"));
-                      
-                    }else if(path.equalsIgnoreCase("/bomb.png"))
-                    {
-                        spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[1] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                        spriteImages[2] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[3] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                        spriteImages[4] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[5] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                        spriteImages[6] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[7] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                        spriteImages[8] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[9] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                        spriteImages[10] = ImageIO.read(getClass().getResourceAsStream(path));
+public class ImageObject implements GameObject, Shapes {
 
-                    }else {
-                        spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[1] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[2] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[3] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[4] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[5] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[6] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[7] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[8] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[9] = ImageIO.read(getClass().getResourceAsStream(path));
-                        spriteImages[10] = ImageIO.read(getClass().getResourceAsStream(path));
+    private static final int MAX_MSTATE = 17;
+    // an array of sprite images that are drawn sequentially
+    private BufferedImage[] spriteImages = new BufferedImage[MAX_MSTATE];
+    private int x;
+    private int y;
+    private boolean visible;
+    private int type;
+    boolean horizontalOnly;
+    boolean caughtByLeft;
+    boolean caughtByRight;
 
-                        
-                    }
-                        
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-       
-        
+    public ImageObject(int posX, int posY, boolean horizontal, String path) {
+        this(posX, posY, horizontal, path, 0);
+    }
 
-	@Override
-	public int getX() {
-		return x;
-	}
+    public ImageObject(int posX, int posY, boolean horizontal, String path, int type) {
+        this.x = posX;
+        this.y = posY;
+        this.type = type;
+        this.visible = true;
+        horizontalOnly = horizontal;
+        // create a bunch of buffered images and place into an array, to be displayed sequentially
+        try {
+            if (path.equalsIgnoreCase("/explosion0.png")) {
+                spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[1] = ImageIO.read(getClass().getResourceAsStream("/explosion1.png"));
+                spriteImages[2] = ImageIO.read(getClass().getResourceAsStream("/explosion2.png"));
+                spriteImages[3] = ImageIO.read(getClass().getResourceAsStream("/explosion3.png"));
+                spriteImages[4] = ImageIO.read(getClass().getResourceAsStream("/explosion4.png"));
+                spriteImages[5] = ImageIO.read(getClass().getResourceAsStream("/explosion5.png"));
+                spriteImages[6] = ImageIO.read(getClass().getResourceAsStream("/explosion6.png"));
+                spriteImages[7] = ImageIO.read(getClass().getResourceAsStream("/explosion7.png"));
+                spriteImages[8] = ImageIO.read(getClass().getResourceAsStream("/explosion8.png"));
+                spriteImages[9] = ImageIO.read(getClass().getResourceAsStream("/explosion9.png"));
+                spriteImages[10] = ImageIO.read(getClass().getResourceAsStream("/explosion10.png"));
+                spriteImages[11] = ImageIO.read(getClass().getResourceAsStream("/explosion11.png"));
+                spriteImages[12] = ImageIO.read(getClass().getResourceAsStream("/explosion12.png"));
+                spriteImages[13] = ImageIO.read(getClass().getResourceAsStream("/explosion13.png"));
+                spriteImages[14] = ImageIO.read(getClass().getResourceAsStream("/explosion14.png"));
+                spriteImages[15] = ImageIO.read(getClass().getResourceAsStream("/explosion15.png"));
+                spriteImages[16] = ImageIO.read(getClass().getResourceAsStream("/explosion16.png"));
 
-	@Override
-	public void setX(int mX) {
-		this.x = mX;
-	}
+            } else if (path.equalsIgnoreCase("/bomb.png")) {
+                spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[1] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                spriteImages[2] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[3] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                spriteImages[4] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[5] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                spriteImages[6] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[7] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                spriteImages[8] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[9] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                spriteImages[10] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[11] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                spriteImages[12] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[13] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                spriteImages[14] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[15] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
+                spriteImages[16] = ImageIO.read(getClass().getResourceAsStream(path));
 
-	@Override
-	public int getY() {
-		return y;
-	}
+            } else {
+                spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[1] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[2] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[3] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[4] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[5] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[6] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[7] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[8] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[9] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[10] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[11] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[12] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[13] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[14] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[15] = ImageIO.read(getClass().getResourceAsStream(path));
+                spriteImages[16] = ImageIO.read(getClass().getResourceAsStream(path));
 
-	@Override
-	public void setY(int mY) {
-            if(horizontalOnly) {
-                return;
             }
-		this.y = mY;
-	}
 
-	@Override
-	public BufferedImage[] getSpriteImages() {
-		return spriteImages;
-	}
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	@Override
-	public int getWidth(){
-		return spriteImages[0].getWidth();
-	}
+    @Override
+    public int getX() {
+        return x;
+    }
 
-	@Override
-	public int getHeight() {
-		return spriteImages[0].getHeight();
-	}
+    @Override
+    public void setX(int mX) {
+        this.x = mX;
+    }
 
-	@Override
-	public boolean isVisible() {
-		return visible;
-	}
-	
-	public void setVisible(boolean visible){
-		this.visible = visible;
-	}
+    @Override
+    public int getY() {
+        return y;
+    }
 
-	public int getType() {
-		return type;
-	}
+    @Override
+    public void setY(int mY) {
+        if (horizontalOnly) {
+            return;
+        }
+        this.y = mY;
+    }
 
-	public void setType(int type) {
-		this.type = type;
-	}
+    @Override
+    public BufferedImage[] getSpriteImages() {
+        return spriteImages;
+    }
+
+    @Override
+    public int getWidth() {
+        return spriteImages[0].getWidth();
+    }
+
+    @Override
+    public int getHeight() {
+        return spriteImages[0].getHeight();
+    }
+
+    @Override
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
 
     @Override
     public Color getColor() {
@@ -158,7 +172,7 @@ public class ImageObject implements GameObject,Shapes{
 
     @Override
     public void setcaughtByLeft(boolean x) {
-        this.caughtByLeft=x;
+        this.caughtByLeft = x;
     }
 
     @Override
@@ -168,12 +182,7 @@ public class ImageObject implements GameObject,Shapes{
 
     @Override
     public void setcaughtByRight(boolean x) {
-        this.caughtByRight=x;
+        this.caughtByRight = x;
     }
 
-
-
-	
-	
 }
-
