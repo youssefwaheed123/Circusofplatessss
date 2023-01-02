@@ -293,7 +293,7 @@ public class CircusOfPlates implements World {
 
     @Override
     public int getSpeed() {
-        return 10;
+        return 20;
     }
 
     @Override
