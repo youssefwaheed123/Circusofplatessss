@@ -391,7 +391,7 @@ public class CircusOfPlatesIntermediate implements World {
         if (livesRemaining == 0) {
             livesCounter = 0;
             return false;
-        } else if (livesCounter == 3) {
+        } else if (livesCounter == 100) {
             ((ImageObject) constant.get(3)).setVisible(false);
             ((ImageObject) constant.get(6)).setVisible(true);
             livesRemaining = 2;
