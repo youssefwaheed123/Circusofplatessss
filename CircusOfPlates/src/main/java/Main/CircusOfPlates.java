@@ -56,48 +56,49 @@ public class CircusOfPlates implements World {
     private int noOfColors;
 
     public CircusOfPlates(int screenWidth, int screenHeight, Strategy gameStrategy) {
-        this.gameStrategy = gameStrategy;
-        colors = gameStrategy.getColors();
+        this.gameStrategy = gameStrategy;    // setting the level  
+        colors = gameStrategy.getColors();   
         noOfColors = gameStrategy.getNoOfColors();
-        shapesFactory = gameStrategy.getShapesFactory();
+        shapesFactory = gameStrategy.getShapesFactory(); //creating factory
         width = screenWidth;
         height = screenHeight;
         livesRemaining = 3;
         livesCounter = 0;
 
-        //constant objects
-        constant.add(shapesFactory.getInstance(0, 0, 0, 0, false, Color.yellow, "/circusBackground.png", "ImageObject"));
-        constant.add(shapesFactory.getInstance(30, 0, 0, 0, true, Color.yellow, "/heart.png", "ImageObject"));
-        constant.add(shapesFactory.getInstance(60, 0, 0, 0, false, Color.yellow, "/heart.png", "ImageObject"));
-        constant.add(shapesFactory.getInstance(90, 0, 0, 0, false, Color.yellow, "/heart.png", "ImageObject"));
-        constant.add(shapesFactory.getInstance(30, 2, 0, 0, true, Color.yellow, "/brokenHeart.png", "ImageObject"));
-        constant.add(shapesFactory.getInstance(60, 2, 0, 0, false, Color.yellow, "/brokenHeart.png", "ImageObject"));
-        constant.add(shapesFactory.getInstance(90, 2, 0, 0, false, Color.yellow, "/brokenHeart.png", "ImageObject"));
+        //creating constant objects
+        constant.add(shapesFactory.getShapes(0, 0, 0, 0, false, Color.yellow, "/circusBackground.png", "ImageObject"));
+        constant.add(shapesFactory.getShapes(30, 0, 0, 0, true, Color.yellow, "/heart.png", "ImageObject"));
+        constant.add(shapesFactory.getShapes(60, 0, 0, 0, false, Color.yellow, "/heart.png", "ImageObject"));
+        constant.add(shapesFactory.getShapes(90, 0, 0, 0, false, Color.yellow, "/heart.png", "ImageObject"));
+        constant.add(shapesFactory.getShapes(30, 2, 0, 0, true, Color.yellow, "/brokenHeart.png", "ImageObject"));
+        constant.add(shapesFactory.getShapes(60, 2, 0, 0, false, Color.yellow, "/brokenHeart.png", "ImageObject"));
+        constant.add(shapesFactory.getShapes(90, 2, 0, 0, false, Color.yellow, "/brokenHeart.png", "ImageObject"));
         ((ImageObject) constant.get(4)).setVisible(false);
-        ((ImageObject) constant.get(5)).setVisible(false);
+        ((ImageObject) constant.get(5)).setVisible(false); //broken hearts
         ((ImageObject) constant.get(6)).setVisible(false);
 
         //controlable objects
-        Clown clown = Clown.getInstance();
+        Clown clown = Clown.getInstance(); //singleton pattern
         control.add((GameObject) clown.createClown());
-        control.add(shapesFactory.getInstance(300, 430, 0, 0, true, Color.green, null, "ClownStick"));
-        control.add(shapesFactory.getInstance(433, 370, 0, 0, true, Color.yellow, null, "ClownStick"));
-        control.add(shapesFactory.getInstance(260, 420, 80, 10, true, Color.BLACK, null, "Rectangle"));
-        control.add(shapesFactory.getInstance(393, 360, 80, 10, true, Color.BLACK, null, "Rectangle"));
-        objectToIntersectRight = control.get(4);
-        objectToIntersectLeft = control.get(3);
+        control.add(shapesFactory.getShapes(300, 430, 0, 0, true, Color.green, null, "ClownStick"));
+        control.add(shapesFactory.getShapes(433, 370, 0, 0, true, Color.yellow, null, "ClownStick"));
+        control.add(shapesFactory.getShapes(260, 420, 80, 10, true, Color.BLACK, null, "Rectangle")); 
+        control.add(shapesFactory.getShapes(393, 360, 80, 10, true, Color.BLACK, null, "Rectangle")); 
+        objectToIntersectRight = control.get(4);  //clown's left rectangle
+        objectToIntersectLeft = control.get(3);   //clown's right rectangle
         heightOfCaughtRight = control.get(4).getY();
         heightOfCaughtLeft = control.get(3).getY();
 
-        //movable objects
+        //creating movable objects
         for (int i = 0; i < 30; i++) {
             Random random = new Random();
-            moving.add(shapesFactory.getInstance(random.nextInt(0, 150), random.nextInt(-8000, -500), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
-            moving.add(shapesFactory.getInstance(random.nextInt(200, 350), random.nextInt(-6000, -500), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
-            moving.add(shapesFactory.getInstance(random.nextInt(400, 550), random.nextInt(-5000, -700), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
-            moving.add(shapesFactory.getInstance(random.nextInt(600, 800), random.nextInt(-5500, -600), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
+            moving.add(shapesFactory.getShapes(random.nextInt(0, 150), random.nextInt(-8000, -500), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
+            moving.add(shapesFactory.getShapes(random.nextInt(200, 350), random.nextInt(-6000, -500), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
+            moving.add(shapesFactory.getShapes(random.nextInt(400, 550), random.nextInt(-5000, -700), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
+            moving.add(shapesFactory.getShapes(random.nextInt(600, 800), random.nextInt(-5500, -600), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
 
         }
+        //creating bombs
         for(int j=0;j<20;j++) {
             moving.add(gameStrategy.CreateBomb());
         }
@@ -112,8 +113,8 @@ public class CircusOfPlates implements World {
      
 
      
-     
-        if (objectToIntersectLeft == control.get(3) || objectToIntersectRight == control.get(4)) {
+     //removing explosion 
+        if (objectToIntersectLeft == control.get(3) || objectToIntersectRight == control.get(4)) { 
 
             if (constant.size() > 7) {
                 for (int i = 7; i < constant.size(); i++) {
@@ -122,6 +123,8 @@ public class CircusOfPlates implements World {
             }
 
         }
+        
+        //ending game
         if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0 || !checkLives() || objectToIntersectLeft instanceof BombObject) {
             ((ImageObject) constant.get(3)).setVisible(false);
             ((ImageObject) constant.get(6)).setVisible(true);        
@@ -154,9 +157,8 @@ public class CircusOfPlates implements World {
                 respawn(gameObject); //regenerating shapes
                 livesCounter++;
             } else if (!((Shapes) gameObject).isCaughtByLeft() && !((Shapes) gameObject).isCaughtByRight()) {
-                gameObject.setY(gameObject.getY()+gameStrategy.getSpeed());
-                
-               // movingState.move(gameObject.getY() + gameStrategy.getSpeed());   //moving the falling objects
+                  
+               movingState.move(gameObject.getY() + gameStrategy.getSpeed());   //moving the falling objects
             }
 
         }
@@ -168,7 +170,7 @@ public class CircusOfPlates implements World {
                 try {
 
                     if (n instanceof BombObject && intersect(objectToIntersectLeft, n)) {
-                        constant.add(shapesFactory.getInstance(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "Explosion"));
+                        constant.add(shapesFactory.getShapes(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "Explosion"));
                         if (!gameStrategy.bombEndsGame()) {
                             for (int j = caughtLeftShapes.size() - 1; j >= 0; j--) {
                                 control.remove(caughtLeftShapes.get(j));
@@ -184,7 +186,7 @@ public class CircusOfPlates implements World {
                         }
 
                     } else if (n instanceof BombObject && intersect(objectToIntersectRight, n)) {
-                        constant.add(shapesFactory.getInstance(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "Explosion"));
+                        constant.add(shapesFactory.getShapes(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "Explosion"));
                         if (!gameStrategy.bombEndsGame()) {
                             for (int j = caughtRightShapes.size() - 1; j >= 0; j--) {
                                 control.remove(caughtRightShapes.get(j));
@@ -203,9 +205,9 @@ public class CircusOfPlates implements World {
                             GameObject object = null;
                             if (n instanceof Plate) {
 
-                                object = shapesFactory.getInstance(control.get(3).getX() + 8, heightOfCaughtLeft - n.getHeight(), n.getWidth(), 0, true, ((Shapes) n).getColor(), null, "Plate");
+                                object = shapesFactory.getShapes(control.get(3).getX() + 8, heightOfCaughtLeft - n.getHeight(), n.getWidth(), 0, true, ((Shapes) n).getColor(), null, "Plate");
                             } else if (n instanceof Rectangle) {
-                                object = shapesFactory.getInstance(control.get(3).getX() + 15, heightOfCaughtLeft - n.getHeight(), n.getWidth(), n.getHeight(), true, ((Shapes) n).getColor(), null, "Rectangle");
+                                object = shapesFactory.getShapes(control.get(3).getX() + 15, heightOfCaughtLeft - n.getHeight(), n.getWidth(), n.getHeight(), true, ((Shapes) n).getColor(), null, "Rectangle");
                             }
 
                             if (caughtLeft.isEmpty()) {
@@ -229,9 +231,9 @@ public class CircusOfPlates implements World {
                             GameObject object = null;
                             if (n instanceof Plate) {
 
-                                object = shapesFactory.getInstance(control.get(4).getX() + 8, heightOfCaughtRight - n.getHeight(), n.getWidth(), 0, true, ((Shapes) n).getColor(), null, "Plate");
+                                object = shapesFactory.getShapes(control.get(4).getX() + 8, heightOfCaughtRight - n.getHeight(), n.getWidth(), 0, true, ((Shapes) n).getColor(), null, "Plate");
                             } else if (n instanceof Rectangle) {
-                                object = shapesFactory.getInstance(control.get(4).getX() + 15, heightOfCaughtRight - n.getHeight(), n.getWidth(), n.getHeight(), true, ((Shapes) n).getColor(), null, "Rectangle");
+                                object = shapesFactory.getShapes(control.get(4).getX() + 15, heightOfCaughtRight - n.getHeight(), n.getWidth(), n.getHeight(), true, ((Shapes) n).getColor(), null, "Rectangle");
                             }
 
                             if (caughtRight.isEmpty()) {

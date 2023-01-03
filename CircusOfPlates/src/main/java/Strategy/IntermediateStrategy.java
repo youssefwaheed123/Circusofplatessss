@@ -19,7 +19,7 @@ public class IntermediateStrategy implements Strategy{
     Random random= new Random();
     @Override
     public GameObject CreateBomb() {
-        return shapesFactory.getInstance(random.nextInt(0, 800), random.nextInt(-3000, -300), 0, 0, false, Color.yellow, "/bomb.png", "BombObject");
+        return shapesFactory.getShapes(random.nextInt(0, 800), random.nextInt(-3000, -300), 0, 0, false, Color.yellow, "/bomb.png", "BombObject");
     }
 
     @Override

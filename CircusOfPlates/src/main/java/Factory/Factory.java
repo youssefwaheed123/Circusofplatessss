@@ -21,7 +21,7 @@ public class Factory {
     }
     
 
-    public GameObject getInstance(int posX,int posY,int width ,int height,boolean horizontalOnly,Color color,String path,String type){
+    public GameObject getShapes(int posX,int posY,int width ,int height,boolean horizontalOnly,Color color,String path,String type){
         if(type==null)
             return null;
         else if(type.equalsIgnoreCase("Rectangle")) {
