@@ -100,7 +100,7 @@ public class StartMenu extends javax.swing.JFrame implements Observer{
         if(difficulty == null) {
          difficulty=new DifficultyMenu();
         }
-        difficulty.attatch(this);
+        difficulty.attach(this);
         difficulty.setVisualState(true);
         difficulty.setLocationRelativeTo(null);
     }//GEN-LAST:event_newGameActionPerformed

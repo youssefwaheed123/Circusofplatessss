@@ -6,9 +6,10 @@ package Main;
 
 import GameController.GameController;
 import GameMusic.GameMusic;
+import ObserverPattern.Observer;
 import ObserverPattern.Subject;
-import State.StartState;
-import State.StopState;
+import State.ResumeState;
+import State.PauseState;
 import Strategy.EasyStrategy;
 import Strategy.ExpertStrategy;
 import Strategy.IntermediateStrategy;
@@ -27,13 +28,14 @@ import javax.swing.JMenuItem;
  *
  * @author youssef
  */
-public class DifficultyMenu extends javax.swing.JFrame implements Subject {
+public class DifficultyMenu extends javax.swing.JFrame implements Subject,Observer{
 
-    private ArrayList<StartMenu> observers = new ArrayList<>();
+    private ArrayList<Observer> observers = new ArrayList<>();
     private boolean VisualState;
-    private StartState startState;
-    private StopState stopState;
-    private GameMusic gameMusic=new GameMusic("/music.wav");
+    private ResumeState startState;
+    private PauseState stopState;
+    private GameMusic gameMusic;
+    GameController gameController;
 
     /**
      * Creates new form DifficultyMenu
@@ -118,18 +120,22 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject {
 
     private void expertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expertActionPerformed
         // TODO add your handling code here:
+        gameMusic=new GameMusic("/music.wav");
         this.setVisible(false);
         Strategy gameStrategy = new ExpertStrategy();
-        GameController gameController = new GameController(() -> new CircusOfPlates(800, 600, gameStrategy));
+        gameController = new GameController(() -> new CircusOfPlates(800, 600, gameStrategy));
+        gameController.attach((Observer)this);
         gameController.start();
         gameMusic.play();
     }//GEN-LAST:event_expertActionPerformed
 
     private void intermediateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intermediateActionPerformed
         // TODO add your handling code here:
+        gameMusic=new GameMusic("/music.wav");
         this.setVisible(false);
         Strategy gameStrategy = new IntermediateStrategy();
-        GameController gameController = new GameController(() -> new CircusOfPlates(800, 600, gameStrategy));
+        gameController = new GameController(() -> new CircusOfPlates(800, 600, gameStrategy));
+        gameController.attach((Observer)this);
         gameController.start();
         gameMusic.play();
         
@@ -137,11 +143,14 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject {
 
     private void begginerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_begginerActionPerformed
         // TODO add your handling code here:
+        gameMusic=new GameMusic("/music.wav");
         this.setVisible(false);
         Strategy gameStrategy = new EasyStrategy();
-        GameController gameController = new GameController(() -> new CircusOfPlates(800, 600, gameStrategy));
+        gameController = new GameController(() -> new CircusOfPlates(800, 600, gameStrategy));
+        gameController.attach((Observer)this);
         gameController.start();
         gameMusic.play();
+        
     }//GEN-LAST:event_begginerActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
@@ -211,8 +220,25 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject {
     }
 
     @Override
-    public void attatch(StartMenu observer) {
+    public void attach(Observer observer) {
         observers.add(observer);
     }
 
-}
+    @Override
+ 
+    public void update() {
+        boolean state = gameController.getVisualState();
+        if (state == false) {
+           gameMusic.stop();
+            this.setVisible(true);
+
+        }
+        if (state == true) {
+            gameMusic.play();
+            this.setVisible(false);
+
+        } 
+    }
+ }
+
+

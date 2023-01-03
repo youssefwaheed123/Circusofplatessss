@@ -90,7 +90,7 @@ public class CircusOfPlates implements World {
         heightOfCaughtLeft = control.get(3).getY();
 
         //movable objects
-        for (int i = 0; i < 60; i++) {
+        for (int i = 0; i < 30; i++) {
             Random random = new Random();
             moving.add(shapesFactory.getInstance(random.nextInt(0, 150), random.nextInt(-8000, -500), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
             moving.add(shapesFactory.getInstance(random.nextInt(200, 350), random.nextInt(-6000, -500), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
@@ -150,7 +150,6 @@ public class CircusOfPlates implements World {
 
             Random random = new Random();
             gameObject = movingIterator.next();
-            System.out.println(gameObject.getY());
             MovingState movingState = new MovingState(gameObject);
             if (gameObject.getY() > 600) {
                 respawn(gameObject); //regenerating shapes

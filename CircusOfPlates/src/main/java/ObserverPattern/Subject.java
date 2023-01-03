@@ -19,7 +19,7 @@ public interface Subject {
 
     public abstract boolean getVisualState();
 
-    public void attatch(StartMenu observer);
+    public void attach(Observer observer);
 
     public void notifyAllObservers();
 
