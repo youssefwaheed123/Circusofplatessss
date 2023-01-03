@@ -4,10 +4,13 @@
  */
 package Factory;
 
-import Shapes.Rectangle;
-import Shapes.Plate;
-import Shapes.*;
-import Shapes.Shapes;
+import Model.Explosion;
+import Model.ClownStick;
+import Model.BombObject;
+import Model.ImageObject;
+import Model.Rectangle;
+import Model.Plate;
+import Model.Shapes;
 import eg.edu.alexu.csd.oop.game.GameObject;
 import java.awt.Color;
 

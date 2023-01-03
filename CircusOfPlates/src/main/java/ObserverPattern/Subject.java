@@ -5,7 +5,7 @@
 package ObserverPattern;
 
 
-import Main.StartMenu;
+import View.StartMenu;
 import java.util.ArrayList;
 import javax.swing.JFrame;
 

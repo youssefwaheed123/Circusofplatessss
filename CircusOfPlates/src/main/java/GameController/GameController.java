@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package GameController;
-import Main.StartMenu;
+import View.StartMenu;
 import ObserverPattern.Observer;
 import ObserverPattern.Subject;
 import State.ResumeState;

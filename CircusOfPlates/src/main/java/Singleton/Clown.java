@@ -4,10 +4,10 @@
  */
 package Singleton;
 
-import Shapes.ClownStick;
-import Shapes.ImageObject;
-import Shapes.Rectangle;
-import Shapes.Shapes;
+import Model.ClownStick;
+import Model.ImageObject;
+import Model.Rectangle;
+import Model.Shapes;
 import eg.edu.alexu.csd.oop.game.GameObject;
 import java.awt.Color;
 import java.util.LinkedList;
