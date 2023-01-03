@@ -4,6 +4,7 @@
  */
 package Main;
 
+import GameController.GameController;
 import ObserverPattern.Subject;
 import State.StartState;
 import State.StopState;
@@ -114,123 +115,30 @@ public class DifficultyMenu extends javax.swing.JFrame implements Subject{
 
     private void expertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expertActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Menu");
-        JMenuItem newMenuItem = new JMenuItem("New");
-        JMenuItem pauseMenuItem = new JMenuItem("Pause");
-        JMenuItem resumeMenuItem = new JMenuItem("Resume");
-        menu.add(newMenuItem);
-        menu.addSeparator();
-        menu.add(pauseMenuItem);
-        menu.add(resumeMenuItem);
-        menuBar.add(menu);
-        Strategy gameStrategy =new ExpertStrategy();
-        final GameEngine.GameController gameController = GameEngine.start("Circus of plates", new CircusOfPlates(800, 600,gameStrategy), menuBar, Color.BLACK);
-        stopState=new StopState(gameController);
-       startState= new StartState(gameController);
-        newMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+         Strategy gameStrategy =new ExpertStrategy();
 
-                gameController.changeWorld(new CircusOfPlates(800, 600,gameStrategy));
-            }
-        });
-        pauseMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-             //   gameController.pause();
-             stopState.changeState();
-            }
-        });
-        resumeMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //gameController.resume();
-                startState.changeState();
 
-            }
-        });
+        GameController gameController = new GameController(() -> new CircusOfPlates(800, 600,gameStrategy));
+        gameController.start();
     }//GEN-LAST:event_expertActionPerformed
 
     private void intermediateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_intermediateActionPerformed
         // TODO add your handling code here:
-        this.setVisible(false);
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Menu");
-        JMenuItem newMenuItem = new JMenuItem("New");
-        JMenuItem pauseMenuItem = new JMenuItem("Pause");
-        JMenuItem resumeMenuItem = new JMenuItem("Resume");
-        menu.add(newMenuItem);
-        menu.addSeparator();
-        menu.add(pauseMenuItem);
-        menu.add(resumeMenuItem);
-        menuBar.add(menu);
         Strategy gameStrategy =new IntermediateStrategy();
-       final GameEngine.GameController gameController = GameEngine.start("Circus of plates", new CircusOfPlates(800, 600,gameStrategy), menuBar, Color.BLACK);
-       stopState=new StopState(gameController);
-       startState= new StartState(gameController);
-        newMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                gameController.changeWorld(new CircusOfPlates(800, 600,gameStrategy));
-            }
-        });
-        pauseMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-             //   gameController.pause();
-             stopState.changeState();
-            }
-        });
-        resumeMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //gameController.resume();
-             startState.changeState();
-            }
-        });
+
+        GameController gameController = new GameController(() -> new CircusOfPlates(800, 600,gameStrategy));
+        gameController.start();
     }//GEN-LAST:event_intermediateActionPerformed
 
     private void begginerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_begginerActionPerformed
         // TODO add your handling code here:
-         this.setVisible(false);
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Menu");
-        JMenuItem newMenuItem = new JMenuItem("New");
-        JMenuItem pauseMenuItem = new JMenuItem("Pause");
-        JMenuItem resumeMenuItem = new JMenuItem("Resume");
-        menu.add(newMenuItem);
-        menu.addSeparator();
-        menu.add(pauseMenuItem);
-        menu.add(resumeMenuItem);
-        menuBar.add(menu);
+ 
         Strategy gameStrategy =new EasyStrategy();
-        final GameEngine.GameController gameController = GameEngine.start("Circus of plates", new CircusOfPlates(800, 600,gameStrategy), menuBar, Color.BLACK);
-        stopState=new StopState(gameController);
-       startState= new StartState(gameController);
-        newMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
 
-                gameController.changeWorld(new CircusOfPlates(800, 600,gameStrategy));
-            }
-        });
-        pauseMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               // gameController.pause();
-               stopState.changeState();
-            }
-        });
-        resumeMenuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-               // gameController.resume();
-             startState.changeState();
-            }
-        });
+
+        GameController gameController = new GameController(() -> new CircusOfPlates(800, 600,gameStrategy));
+        gameController.start();
     }//GEN-LAST:event_begginerActionPerformed
 
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing

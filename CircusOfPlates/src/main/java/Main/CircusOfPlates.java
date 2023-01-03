@@ -5,6 +5,7 @@
 package Main;
 
 import Factory.Factory;
+import Iterator.ShapesListIterator;
 import Shapes.BombObject;
 import Shapes.ClownStick;
 import Shapes.ImageObject;
@@ -28,8 +29,8 @@ import java.util.Stack;
  * @author youssef
  */
 public class CircusOfPlates implements World {
-    
-    private long startTime= System.currentTimeMillis();
+
+    private long startTime = System.currentTimeMillis();
     private int score = 0;
     private final int width;
     private final int height;
@@ -38,15 +39,14 @@ public class CircusOfPlates implements World {
     private final List<GameObject> control = new LinkedList<GameObject>();
     private final List<GameObject> caughtLeftShapes = new LinkedList<GameObject>();
     private final List<GameObject> caughtRightShapes = new LinkedList<GameObject>();
-    ListIterator<GameObject> iterator = moving.listIterator();
+    ShapesListIterator movingIterator = new ShapesListIterator(moving);
+    ShapesListIterator ControlIterator = new ShapesListIterator(control);
+    ShapesListIterator constantIterator = new ShapesListIterator(constant);
     GameObject gameObject;
-    private long FlagTime;
     private int livesRemaining;
     private int livesCounter;
     private Stack<GameObject> caughtLeft = new Stack();
     private Stack<GameObject> caughtRight = new Stack();
-    private int leftIndex;
-    private int rightIndex;
     private int heightOfCaughtRight;
     private int heightOfCaughtLeft;
     GameObject objectToIntersectRight;
@@ -109,14 +109,14 @@ public class CircusOfPlates implements World {
     public boolean refresh() {
         if (objectToIntersectLeft == control.get(3) || objectToIntersectRight == control.get(4)) {
 
-            if(constant.size()>7) {
-            for (int i = 7; i < constant.size(); i++) {
-                constant.remove(i);
+            if (constant.size() > 7) {
+                for (int i = 7; i < constant.size(); i++) {
+                    constant.remove(i);
+                }
             }
-            }
-            
+
         }
-        if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0 || !checkLives() || objectToIntersectLeft instanceof ImageObject) {
+        if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0 || !checkLives() || objectToIntersectLeft instanceof BombObject) {
             livesRemaining = 0;
             return false;
         }
@@ -125,70 +125,24 @@ public class CircusOfPlates implements World {
 
         if (control.get(3).getX() <= 0) {
 
-            control.get(0).setX(40);
-            control.get(1).setX(40);
-            control.get(2).setX(173);
-            control.get(4).setX(133);
-            for (int i = 5; i < control.size(); i++) {
-
-                if (control.get(i) instanceof Rectangle) {
-                    if (((Shapes) control.get(i)).isCaughtByLeft()) {
-                        control.get(i).setX(control.get(3).getX() + 15);
-                        control.get(i).setY(control.get(i).getY());
-                    } else {
-                        control.get(i).setX(control.get(4).getX() + 15);
-                        control.get(i).setY(control.get(i).getY());
-                    }
-                } else {
-                    if (((Plate) control.get(i)).isCaughtByLeft()) {
-                        control.get(i).setX(control.get(3).getX() + 8);
-                        control.get(i).setY(control.get(i).getY());
-                    } else {
-                        control.get(i).setX(control.get(4).getX() + 8);
-                        control.get(i).setY(control.get(i).getY());
-                    }
-                }
-            }
+            setLeftLimits();
 
         } else if (control.get(4).getX() >= 720) {
 
-            control.get(0).setX(627);
-            control.get(1).setX(627);
-            control.get(2).setX(760);
-            control.get(3).setX(587);
-            for (int i = 5; i < control.size(); i++) {
+            setRightLimits();
 
-                if (control.get(i) instanceof Rectangle) {
-                    if (((Shapes) control.get(i)).isCaughtByLeft()) {
-                        control.get(i).setX(control.get(3).getX() + 15);
-                        control.get(i).setY(control.get(i).getY());
-                    } else {
-                        control.get(i).setX(control.get(4).getX() + 15);
-                        control.get(i).setY(control.get(i).getY());
-                    }
-                } else if (control.get(i) instanceof Plate) {
-                    if (((Shapes) control.get(i)).isCaughtByLeft()) {
-                        control.get(i).setX(control.get(3).getX() + 8);
-                        control.get(i).setY(control.get(i).getY());
-                    } else {
-                        control.get(i).setX(control.get(4).getX() + 8);
-                        control.get(i).setY(control.get(i).getY());
-                    }
-                }
-            }
         }
 
-        for (int i = 0; i < moving.size(); i++) {
+        for(int i=0; i<moving.size();i++) {
+
             Random random = new Random();
             gameObject = moving.get(i);
-            MovingState movingState =new MovingState(gameObject);
+            MovingState movingState = new MovingState(gameObject);
             if (gameObject.getY() > 600) {
                 respawn(gameObject); //regenerating shapes
                 livesCounter++;
             } else if (!((Shapes) gameObject).isCaughtByLeft() && !((Shapes) gameObject).isCaughtByRight()) {
-
-//                gameObject.setY(gameObject.getY() + gameStrategy.getSpeed());  //moving the falling objects
-                    movingState.move(gameObject.getY() + gameStrategy.getSpeed());
+                movingState.move(gameObject.getY() + gameStrategy.getSpeed());   //moving the falling objects
             }
 
         }
@@ -199,7 +153,7 @@ public class CircusOfPlates implements World {
             if (intersect(objectToIntersectLeft, n) || intersect(objectToIntersectRight, n)) {
                 try {
 
-                    if (n instanceof BombObject && intersect(objectToIntersectLeft, n)) {                      
+                    if (n instanceof BombObject && intersect(objectToIntersectLeft, n)) {
                         constant.add(shapesFactory.getInstance(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "Explosion"));
                         if (!gameStrategy.bombEndsGame()) {
                             for (int j = caughtLeftShapes.size() - 1; j >= 0; j--) {
@@ -442,4 +396,59 @@ public class CircusOfPlates implements World {
             gameObject.setY(random.nextInt(-200, 0));
         }
     }
+
+    public void setRightLimits() {
+        control.get(0).setX(627);
+        control.get(1).setX(627);
+        control.get(2).setX(760);
+        control.get(3).setX(587);
+        for (int i = 5; i < control.size(); i++) {
+
+            if (control.get(i) instanceof Rectangle) {
+                if (((Shapes) control.get(i)).isCaughtByLeft()) {
+                    control.get(i).setX(control.get(3).getX() + 15);
+                    control.get(i).setY(control.get(i).getY());
+                } else {
+                    control.get(i).setX(control.get(4).getX() + 15);
+                    control.get(i).setY(control.get(i).getY());
+                }
+            } else if (control.get(i) instanceof Plate) {
+                if (((Shapes) control.get(i)).isCaughtByLeft()) {
+                    control.get(i).setX(control.get(3).getX() + 8);
+                    control.get(i).setY(control.get(i).getY());
+                } else {
+                    control.get(i).setX(control.get(4).getX() + 8);
+                    control.get(i).setY(control.get(i).getY());
+                }
+            }
+        }
+    }
+
+    public void setLeftLimits() {
+        control.get(0).setX(40);
+        control.get(1).setX(40);
+        control.get(2).setX(173);
+        control.get(4).setX(133);
+        for (int i = 5; i < control.size(); i++) {
+
+            if (control.get(i) instanceof Rectangle) {
+                if (((Shapes) control.get(i)).isCaughtByLeft()) {
+                    control.get(i).setX(control.get(3).getX() + 15);
+                    control.get(i).setY(control.get(i).getY());
+                } else {
+                    control.get(i).setX(control.get(4).getX() + 15);
+                    control.get(i).setY(control.get(i).getY());
+                }
+            } else {
+                if (((Plate) control.get(i)).isCaughtByLeft()) {
+                    control.get(i).setX(control.get(3).getX() + 8);
+                    control.get(i).setY(control.get(i).getY());
+                } else {
+                    control.get(i).setX(control.get(4).getX() + 8);
+                    control.get(i).setY(control.get(i).getY());
+                }
+            }
+        }
+    }
+
 }
