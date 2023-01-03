@@ -5,19 +5,20 @@
 package Iterator;
 
 import eg.edu.alexu.csd.oop.game.GameObject;
-import java.util.Iterator;
+
+import java.util.LinkedList;
 import java.util.List;
 
 /**
  *
  * @author youssef
  */
-public class ShapesListIterator implements Iterator<GameObject> {
+public class ShapesListIterator implements Iterator{
 
     int index = 0;
-    List<GameObject> x;
+    LinkedList<GameObject> x;
 
-    public ShapesListIterator(List<GameObject> x) {
+    public ShapesListIterator(LinkedList<GameObject> x) {
         this.x = x;
     }
 
@@ -33,15 +34,11 @@ public class ShapesListIterator implements Iterator<GameObject> {
     @Override
     public GameObject next() {
         
-        return x.get(index);
+        GameObject gameObject =x.get(index);
+        index++;
+        return gameObject;
         
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
-    
-    public int getIndex() {
-        return index;
-    }
+
 }

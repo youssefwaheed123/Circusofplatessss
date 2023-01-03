@@ -33,8 +33,7 @@ import javax.swing.JOptionPane;
     
     public GameController(Supplier<World> gameSupplier) {
         this.gameSupplier = gameSupplier;
-        stopState=new StopState(gameController);
-        startState= new StartState(gameController);
+
     }
     
     private JMenuBar createMenuBar() {
@@ -57,6 +56,7 @@ import javax.swing.JOptionPane;
                   start();
             }
         });
+
         pauseMenuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -76,6 +76,8 @@ import javax.swing.JOptionPane;
         JMenuBar menuBar = createMenuBar();
         World game = gameSupplier.get();
         this.gameController = GameEngine.start("Circus of plates", game, menuBar, Color.BLACK);
+        stopState=new StopState(this.gameController);
+        startState= new StartState(this.gameController);
         this.gameFrame = (JFrame) menuBar.getParent().getParent().getParent();
         
         this.gameFrame.addWindowListener(new java.awt.event.WindowAdapter() {

@@ -30,7 +30,6 @@ import java.util.Stack;
  */
 public class CircusOfPlates implements World {
 
-    private long startTime = System.currentTimeMillis();
     private int score = 0;
     private final int width;
     private final int height;
@@ -39,9 +38,9 @@ public class CircusOfPlates implements World {
     private final List<GameObject> control = new LinkedList<GameObject>();
     private final List<GameObject> caughtLeftShapes = new LinkedList<GameObject>();
     private final List<GameObject> caughtRightShapes = new LinkedList<GameObject>();
-    ShapesListIterator movingIterator = new ShapesListIterator(moving);
-    ShapesListIterator ControlIterator = new ShapesListIterator(control);
-    ShapesListIterator constantIterator = new ShapesListIterator(constant);
+    ShapesListIterator movingIterator;
+    ShapesListIterator ControlIterator;
+    ShapesListIterator constantIterator;
     GameObject gameObject;
     private int livesRemaining;
     private int livesCounter;
@@ -91,12 +90,15 @@ public class CircusOfPlates implements World {
         heightOfCaughtLeft = control.get(3).getY();
 
         //movable objects
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 60; i++) {
             Random random = new Random();
-            moving.add(shapesFactory.getInstance(random.nextInt(0, 150), random.nextInt(-800, -100), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
-            moving.add(shapesFactory.getInstance(random.nextInt(200, 350), random.nextInt(-600, -50), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
-            moving.add(shapesFactory.getInstance(random.nextInt(400, 550), random.nextInt(-500, -70), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
-            moving.add(shapesFactory.getInstance(random.nextInt(600, 800), random.nextInt(-550, -60), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
+            moving.add(shapesFactory.getInstance(random.nextInt(0, 150), random.nextInt(-8000, -500), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
+            moving.add(shapesFactory.getInstance(random.nextInt(200, 350), random.nextInt(-6000, -500), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
+            moving.add(shapesFactory.getInstance(random.nextInt(400, 550), random.nextInt(-5000, -700), 50, 25, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Rectangle"));
+            moving.add(shapesFactory.getInstance(random.nextInt(600, 800), random.nextInt(-5500, -600), 70, 0, false, colors[random.nextInt(gameStrategy.getNoOfColors())], null, "Plate"));
+
+        }
+        for(int j=0;j<20;j++) {
             moving.add(gameStrategy.CreateBomb());
         }
     }
@@ -107,6 +109,11 @@ public class CircusOfPlates implements World {
 
     @Override
     public boolean refresh() {
+     movingIterator = new ShapesListIterator((LinkedList<GameObject>) moving);
+     ControlIterator = new ShapesListIterator((LinkedList<GameObject>) control);
+     constantIterator = new ShapesListIterator((LinkedList<GameObject>) constant);
+     
+     
         if (objectToIntersectLeft == control.get(3) || objectToIntersectRight == control.get(4)) {
 
             if (constant.size() > 7) {
@@ -117,6 +124,12 @@ public class CircusOfPlates implements World {
 
         }
         if (heightOfCaughtLeft <= 0 || heightOfCaughtRight <= 0 || !checkLives() || objectToIntersectLeft instanceof BombObject) {
+            ((ImageObject) constant.get(3)).setVisible(false);
+            ((ImageObject) constant.get(6)).setVisible(true);        
+            ((ImageObject) constant.get(2)).setVisible(false);
+            ((ImageObject) constant.get(5)).setVisible(true);     
+            ((ImageObject) constant.get(1)).setVisible(false);
+            ((ImageObject) constant.get(4)).setVisible(true);
             livesRemaining = 0;
             return false;
         }
@@ -133,16 +146,19 @@ public class CircusOfPlates implements World {
 
         }
 
-        for(int i=0; i<moving.size();i++) {
+        while(movingIterator.hasNext()) {
 
             Random random = new Random();
-            gameObject = moving.get(i);
+            gameObject = movingIterator.next();
+            System.out.println(gameObject.getY());
             MovingState movingState = new MovingState(gameObject);
             if (gameObject.getY() > 600) {
                 respawn(gameObject); //regenerating shapes
                 livesCounter++;
             } else if (!((Shapes) gameObject).isCaughtByLeft() && !((Shapes) gameObject).isCaughtByRight()) {
-                movingState.move(gameObject.getY() + gameStrategy.getSpeed());   //moving the falling objects
+                gameObject.setY(gameObject.getY()+gameStrategy.getSpeed());
+                
+               // movingState.move(gameObject.getY() + gameStrategy.getSpeed());   //moving the falling objects
             }
 
         }
@@ -390,7 +406,7 @@ public class CircusOfPlates implements World {
     public void respawn(GameObject gameObject) {
         Random random = new Random();
         gameObject.setX(gameObject.getX());
-        if (gameObject instanceof ImageObject) {
+        if (gameObject instanceof BombObject) {
             gameObject.setY(random.nextInt(-1000, -500));
         } else {
             gameObject.setY(random.nextInt(-200, 0));

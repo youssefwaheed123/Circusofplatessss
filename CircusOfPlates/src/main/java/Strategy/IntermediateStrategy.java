@@ -24,7 +24,7 @@ public class IntermediateStrategy implements Strategy{
 
     @Override
     public int getSpeed() {
-        return 2;
+        return 4;
     }
 
     @Override
