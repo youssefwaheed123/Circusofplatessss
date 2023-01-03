@@ -18,7 +18,7 @@ import javax.imageio.ImageIO;
  */
 public class ImageObject implements GameObject, Shapes {
 
-    private static final int MAX_MSTATE = 17;
+    private static final int MAX_MSTATE = 1;
     // an array of sprite images that are drawn sequentially
     private BufferedImage[] spriteImages = new BufferedImage[MAX_MSTATE];
     private int x;
@@ -41,64 +41,8 @@ public class ImageObject implements GameObject, Shapes {
         horizontalOnly = horizontal;
         // create a bunch of buffered images and place into an array, to be displayed sequentially
         try {
-            if (path.equalsIgnoreCase("/explosion0.png")) {
-                spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[1] = ImageIO.read(getClass().getResourceAsStream("/explosion1.png"));
-                spriteImages[2] = ImageIO.read(getClass().getResourceAsStream("/explosion2.png"));
-                spriteImages[3] = ImageIO.read(getClass().getResourceAsStream("/explosion3.png"));
-                spriteImages[4] = ImageIO.read(getClass().getResourceAsStream("/explosion4.png"));
-                spriteImages[5] = ImageIO.read(getClass().getResourceAsStream("/explosion5.png"));
-                spriteImages[6] = ImageIO.read(getClass().getResourceAsStream("/explosion6.png"));
-                spriteImages[7] = ImageIO.read(getClass().getResourceAsStream("/explosion7.png"));
-                spriteImages[8] = ImageIO.read(getClass().getResourceAsStream("/explosion8.png"));
-                spriteImages[9] = ImageIO.read(getClass().getResourceAsStream("/explosion9.png"));
-                spriteImages[10] = ImageIO.read(getClass().getResourceAsStream("/explosion10.png"));
-                spriteImages[11] = ImageIO.read(getClass().getResourceAsStream("/explosion11.png"));
-                spriteImages[12] = ImageIO.read(getClass().getResourceAsStream("/explosion12.png"));
-                spriteImages[13] = ImageIO.read(getClass().getResourceAsStream("/explosion13.png"));
-                spriteImages[14] = ImageIO.read(getClass().getResourceAsStream("/explosion14.png"));
-                spriteImages[15] = ImageIO.read(getClass().getResourceAsStream("/explosion15.png"));
-                spriteImages[16] = ImageIO.read(getClass().getResourceAsStream("/explosion16.png"));
 
-            } else if (path.equalsIgnoreCase("/bomb.png")) {
-                spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[1] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                spriteImages[2] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[3] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                spriteImages[4] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[5] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                spriteImages[6] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[7] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                spriteImages[8] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[9] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                spriteImages[10] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[11] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                spriteImages[12] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[13] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                spriteImages[14] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[15] = ImageIO.read(getClass().getResourceAsStream("/bomb1.png"));
-                spriteImages[16] = ImageIO.read(getClass().getResourceAsStream(path));
-
-            } else {
-                spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[1] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[2] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[3] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[4] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[5] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[6] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[7] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[8] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[9] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[10] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[11] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[12] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[13] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[14] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[15] = ImageIO.read(getClass().getResourceAsStream(path));
-                spriteImages[16] = ImageIO.read(getClass().getResourceAsStream(path));
-
-            }
+            spriteImages[0] = ImageIO.read(getClass().getResourceAsStream(path));
 
         } catch (IOException e) {
             e.printStackTrace();

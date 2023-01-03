@@ -5,12 +5,14 @@
 package Main;
 
 import Factory.Factory;
+import Shapes.BombObject;
 import Shapes.ClownStick;
 import Shapes.ImageObject;
 import Shapes.Plate;
 import Shapes.Rectangle;
 import Shapes.Shapes;
 import Singleton.Clown;
+import State.MovingState;
 import Strategy.Strategy;
 import eg.edu.alexu.csd.oop.game.GameObject;
 import eg.edu.alexu.csd.oop.game.World;
@@ -179,12 +181,14 @@ public class CircusOfPlates implements World {
         for (int i = 0; i < moving.size(); i++) {
             Random random = new Random();
             gameObject = moving.get(i);
+            MovingState movingState =new MovingState(gameObject);
             if (gameObject.getY() > 600) {
                 respawn(gameObject); //regenerating shapes
                 livesCounter++;
             } else if (!((Shapes) gameObject).isCaughtByLeft() && !((Shapes) gameObject).isCaughtByRight()) {
 
-                gameObject.setY(gameObject.getY() + gameStrategy.getSpeed());  //moving the falling objects
+//                gameObject.setY(gameObject.getY() + gameStrategy.getSpeed());  //moving the falling objects
+                    movingState.move(gameObject.getY() + gameStrategy.getSpeed());
             }
 
         }
@@ -195,8 +199,8 @@ public class CircusOfPlates implements World {
             if (intersect(objectToIntersectLeft, n) || intersect(objectToIntersectRight, n)) {
                 try {
 
-                    if (n instanceof ImageObject && intersect(objectToIntersectLeft, n)) {                      
-                        constant.add(shapesFactory.getInstance(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "ImageObject"));
+                    if (n instanceof BombObject && intersect(objectToIntersectLeft, n)) {                      
+                        constant.add(shapesFactory.getInstance(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "Explosion"));
                         if (!gameStrategy.bombEndsGame()) {
                             for (int j = caughtLeftShapes.size() - 1; j >= 0; j--) {
                                 control.remove(caughtLeftShapes.get(j));
@@ -211,8 +215,8 @@ public class CircusOfPlates implements World {
                             objectToIntersectLeft = n;
                         }
 
-                    } else if (n instanceof ImageObject && intersect(objectToIntersectRight, n)) {
-                        constant.add(shapesFactory.getInstance(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "ImageObject"));
+                    } else if (n instanceof BombObject && intersect(objectToIntersectRight, n)) {
+                        constant.add(shapesFactory.getInstance(n.getX() - 50, n.getY() - 80, 0, 0, false, Color.yellow, "/explosion0.png", "Explosion"));
                         if (!gameStrategy.bombEndsGame()) {
                             for (int j = caughtRightShapes.size() - 1; j >= 0; j--) {
                                 control.remove(caughtRightShapes.get(j));
@@ -293,7 +297,7 @@ public class CircusOfPlates implements World {
 
     @Override
     public int getSpeed() {
-        return 20;
+        return 40;
     }
 
     @Override
