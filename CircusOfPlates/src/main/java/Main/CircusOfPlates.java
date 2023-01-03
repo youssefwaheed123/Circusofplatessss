@@ -109,9 +109,8 @@ public class CircusOfPlates implements World {
 
     @Override
     public boolean refresh() {
-     movingIterator = new ShapesListIterator((LinkedList<GameObject>) moving);
-     ControlIterator = new ShapesListIterator((LinkedList<GameObject>) control);
-     constantIterator = new ShapesListIterator((LinkedList<GameObject>) constant);
+     
+
      
      
         if (objectToIntersectLeft == control.get(3) || objectToIntersectRight == control.get(4)) {
@@ -145,7 +144,7 @@ public class CircusOfPlates implements World {
             setRightLimits();
 
         }
-
+        movingIterator = new ShapesListIterator((LinkedList<GameObject>) moving);
         while(movingIterator.hasNext()) {
 
             Random random = new Random();
@@ -161,10 +160,10 @@ public class CircusOfPlates implements World {
             }
 
         }
-
+        movingIterator = new ShapesListIterator((LinkedList<GameObject>) moving);
         //catching the falling objects
-        for (int i = 0; i < moving.size(); i++) {
-            GameObject n = moving.get(i);
+        while(movingIterator.hasNext()){
+            GameObject n = movingIterator.next();
             if (intersect(objectToIntersectLeft, n) || intersect(objectToIntersectRight, n)) {
                 try {
 
