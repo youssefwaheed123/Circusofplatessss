@@ -101,7 +101,10 @@ public class CircusOfPlates implements World {
         }
         //creating bombs
         for(int j=0;j<20;j++) {
-            moving.add(gameStrategy.CreateBomb());
+            GameObject bomb=gameStrategy.CreateBomb();
+            if(bomb != null) {
+            moving.add(bomb);
+            }
         }
     }
 

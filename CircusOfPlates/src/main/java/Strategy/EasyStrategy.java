@@ -13,16 +13,16 @@ import java.util.Random;
  *
  * @author youssef
  */
-public class EasyStrategy implements Strategy{
-    final static int noOfColors=2;
-    Factory shapesFactory=new Factory();
-    Random random =new Random();
+public class EasyStrategy implements Strategy {
+
+    final static int noOfColors = 2;
+    Factory shapesFactory = new Factory();
+    Random random = new Random();
+
     @Override
     public GameObject CreateBomb() {
-        return shapesFactory.getShapes(random.nextInt(0, 800), random.nextInt(-3000, -300), 0, 0, false, Color.yellow, "/bomb.png", "BombObject");
-
+        return null;
     }
-    
 
     @Override
     public int getSpeed() {
@@ -31,7 +31,7 @@ public class EasyStrategy implements Strategy{
 
     @Override
     public Color[] getColors() {
-        Color[] colors={Color.RED, Color.BLUE};
+        Color[] colors = {Color.RED, Color.BLUE};
         return colors;
     }
 
@@ -49,5 +49,5 @@ public class EasyStrategy implements Strategy{
     public int getNoOfColors() {
         return noOfColors;
     }
-    
+
 }
